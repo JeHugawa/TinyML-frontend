@@ -1,3 +1,6 @@
 venv
 .env
 frontend.Dockerfile
+
+# Directories
+__pycache__
