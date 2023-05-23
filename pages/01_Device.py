@@ -4,8 +4,11 @@ import requests
 import os
 import usb.core
 import usb.util
+import json
+import pandas as pd
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 BACKEND_URL = os.getenv("BACKEND_URL")  # "http://backend:8000/"
@@ -13,11 +16,12 @@ ACCEPTED_VENDORS = ["Raspberry Pi", "Arduino"]
 
 st.set_page_config(
     page_title='Device',
-    layout='wide')
+    page_icon='✅',
+    layout='wide'
+)
 
 
 def send_add_request():
-    url = BACKEND_URL + "add_device"
     state = st.session_state
     data = {
         "name": state.device_name,
@@ -27,7 +31,8 @@ def send_add_request():
         "model": state.model,
         "description": state.description
     }
-    requests.post(url, json=data)
+    data = {key: val if len(val) > 0 else None for key, val in data.items()}
+    requests.post(f"{BACKEND_URL}/add_device/", json=data)
 
 
 def handle_add(manufacturer="", product="", serial=""):
@@ -41,7 +46,7 @@ def handle_add(manufacturer="", product="", serial=""):
         st.text_input("Description", key="description")
 
         col1, col2, col3, col4, col5, col6 = st.columns(6)
-        # col1.form_submit_button(label='Add', on_click=add)
+        col1.form_submit_button(label='Add', on_click=send_add_request)
         col6.form_submit_button(label='Cancel')
 
 
@@ -95,10 +100,23 @@ def list_connected_devices():
         st.write("No devices found")
 
 
+def registered_devices():
+    # List all registered devices
+    st.header("All registered devices")
+    response = requests.get(f"{BACKEND_URL}/registered_devices/")
+    data = json.loads(response.text)
+    df = pd.read_json(data)
+
+    # taulukko
+    st.table(df)
+
+
 def main():
     load_page_info()
 
     list_connected_devices()
+
+    registered_devices()
 
 
 main()
