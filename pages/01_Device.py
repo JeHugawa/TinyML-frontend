@@ -23,4 +23,3 @@ df = pd.read_json(data)
 
 # taulukko
 st.table(df)
-
