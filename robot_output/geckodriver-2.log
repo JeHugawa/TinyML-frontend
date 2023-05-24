@@ -1,0 +1,14 @@
+1684844949130	geckodriver	INFO	Listening on 127.0.0.1:48275
+1684844949634	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" MOZ_NO_REMOTE="1" "/usr ... ss" "--remote-debugging-port" "58619" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebYGSXc"
+*** You are running in headless mode.
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1684844949986	Marionette	INFO	Marionette enabled
+1684844949990	Marionette	INFO	Listening on port 33617
+Read port: 33617
+WebDriver BiDi listening on ws://127.0.0.1:58619
+1684844950107	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+[ERROR glean_core] Error setting metrics feature config: Json(Error("EOF while parsing a value", line: 1, column: 0))
+DevTools listening on ws://127.0.0.1:58619/devtools/browser/aa58fcc7-8b5c-4f6b-a03a-bf8553db0080

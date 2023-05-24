@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.2 (Python 3.10.0 on linux)" generated="20230524 10:18:40.735" rpa="false" schemaversion="3">
+<suite id="s1" name="Tests" source="/home/levantsi/Ohtuprojekti/repot/TinyML-frontend/tests">
+<suite id="s1-s1" name="Test Device Page" source="/home/levantsi/Ohtuprojekti/repot/TinyML-frontend/tests/test_device_page.robot">
+<test id="s1-s1-t1" name="Check Header For Registered Devices Table" line="10">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20230524 10:18:40.980" level="INFO">Opening browser 'headlessfirefox' to base url 'http://localhost:8501/Device/'.</msg>
+<msg timestamp="20230524 10:18:40.981" level="INFO">Applicable driver not found; attempting to install with Selenium Manager (Beta)</msg>
+<status status="PASS" starttime="20230524 10:18:40.979" endtime="20230524 10:18:43.392"/>
+</kw>
+<kw name="Wait Until Page Contains" library="SeleniumLibrary">
+<arg>All registered devices</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" starttime="20230524 10:18:43.393" endtime="20230524 10:18:44.318"/>
+</kw>
+<kw name="Close Browser" library="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" starttime="20230524 10:18:44.319" endtime="20230524 10:18:44.779"/>
+</kw>
+<status status="PASS" starttime="20230524 10:18:40.978" endtime="20230524 10:18:44.780"/>
+</test>
+<test id="s1-s1-t2" name="Check That Registered Devices Table Is Not Empty" line="15">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20230524 10:18:44.781" level="INFO">Opening browser 'headlessfirefox' to base url 'http://localhost:8501/Device/'.</msg>
+<msg timestamp="20230524 10:18:44.782" level="INFO">Applicable driver not found; attempting to install with Selenium Manager (Beta)</msg>
+<status status="PASS" starttime="20230524 10:18:44.781" endtime="20230524 10:18:47.501"/>
+</kw>
+<kw name="Wait Until Page Contains" library="SeleniumLibrary">
+<arg>Espressif ESP-EYE</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" starttime="20230524 10:18:47.502" endtime="20230524 10:18:48.378"/>
+</kw>
+<status status="PASS" starttime="20230524 10:18:44.780" endtime="20230524 10:18:48.379"/>
+</test>
+<status status="PASS" starttime="20230524 10:18:40.764" endtime="20230524 10:18:48.379"/>
+</suite>
+<status status="PASS" starttime="20230524 10:18:40.736" endtime="20230524 10:18:48.380"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="Tests">Tests</stat>
+<stat pass="2" fail="0" skip="0" id="s1-s1" name="Test Device Page">Tests.Test Device Page</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
