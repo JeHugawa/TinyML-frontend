@@ -15,6 +15,9 @@ def get_registered_devices():
     data = json.loads(response.text)
     df = pd.read_json(data)
     
+    if df.empty: 
+        return None
+    
     return df
 
 def remove(*args):

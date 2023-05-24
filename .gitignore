@@ -1,5 +1,5 @@
 venv
 .env
 robot_output
-*pycache*
+__pycache__
 
