@@ -4,7 +4,7 @@ Library           SeleniumLibrary
 *** Variables ***
 ${BROWSER}        headlessfirefox
 ${DELAY}          0.10 seconds
-${URL}            http://localhost:8502/Device/
+${URL}            http://localhost:8501/Device/
 
 *** Test Cases ***
 Check Header For Registered Devices Table
