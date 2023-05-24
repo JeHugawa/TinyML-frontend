@@ -13,6 +13,15 @@ ACCEPTED_VENDORS = ["Raspberry Pi", "Arduino"]
 
 
 def find_usb_devices():
+    """Find connected usb devices, that are either Arduinos or Raspberry Pis.
+
+    This requires root privileges, and when running in a docker container,
+    only devices that are connected when container is started can be found.
+
+    Returns:
+        Function returns the found connected usb devices
+    """
+
     all_devices = list(usb.core.find(find_all=True))
 
     devices = []
@@ -41,6 +50,12 @@ def find_usb_devices():
 
 
 def send_add_request(data: dict):
+    """Send the request to add the device to the backend
+
+    Args:
+        data: The data of the device
+    """
+
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
     res = requests.post(f"{BACKEND_URL}/add_device/", json=data)
     if res.status_code == 200:
