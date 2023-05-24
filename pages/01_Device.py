@@ -11,6 +11,10 @@ st.set_page_config(
 
 state = st.session_state
 
+def remove_device(*args):
+    device_service.remove(*args)
+    st.success("Device removed successfully.")
+
 # List all registered devices
 st.header("All registered devices")
 
@@ -32,7 +36,7 @@ for row in registered_devices.sort_values("id").itertuples():
         col[4].write(compiler)
         col[5].write(model)
         col[6].write(description)
-        col[7].button("Delete", key=name, on_click=None, args=(registered_devices, id))
+        col[7].button("Remove", key=name, on_click=remove_device, args=(str(id))) # args in st.buttons is always a tuple of strings
         col[8].button("Modify", key=f'm_{name}', on_click=None, args=(
             registered_devices, id, name, connection, installer, compiler, model, description))
         col[9].button("Select", key=f"s_{name}", on_click=None, args=(

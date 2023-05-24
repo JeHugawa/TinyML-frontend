@@ -17,5 +17,7 @@ def get_registered_devices():
     
     return df
 
-def show_registered_devices():
-    pass
+def remove(*args):
+    device_id = ''.join(args)
+    response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
+    
