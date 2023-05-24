@@ -1,7 +1,11 @@
 import streamlit as st
 from services import data_service
 
-st.set_page_config(page_title="Device", page_icon="✅", layout="wide")
+st.set_page_config(
+    page_title="Data", 
+    page_icon="✅", 
+    layout="wide"
+    )
 
 # List all registered devices
 st.header("Existing datasets")
