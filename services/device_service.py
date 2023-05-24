@@ -58,6 +58,6 @@ def send_add_request(data: dict):
 
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
     res = requests.post(f"{BACKEND_URL}/add_device/", json=data)
-    if res.status_code == 200:
+    if res.status_code == 201:
         return None
     return json.loads(res.text)
