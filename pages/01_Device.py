@@ -18,6 +18,9 @@ st.set_page_config(
 
 state = st.session_state
 
+if "bridge" in state:
+    st.success(f"Successfully selected bridge {state.bridge}")
+
 
 def submit_add():
     state.added = device_service.send_add_request({
@@ -43,6 +46,11 @@ def handle_add(manufacturer="", product="", serial=""):
         col1, col2, col3, col4, col5, col6 = st.columns(6)
         col1.form_submit_button(label='Add', on_click=submit_add)
         col6.form_submit_button(label='Cancel')
+
+
+def select_bridge(*address):
+    address = "".join(address)
+    state.bridge = address
 
 
 def register_a_bridge():
@@ -152,3 +160,5 @@ for row in registered_devices.sort_values("address").itertuples():
     # if "selected_device" in state and state.selected_device["id"] == id:
     #    col[1].write("**"+name+"**")
     col[1].write(name)
+    col[2].button("Select", key=f"s_{address}",
+                  on_click=select_bridge, args=(address))
