@@ -1,13 +1,9 @@
 import streamlit as st
-import requests
-
 import os
-import json
-import pandas as pd
 
 from dotenv import load_dotenv
 
-from services import device_service
+from services import device_service, bridge_service
 
 load_dotenv()
 
@@ -66,6 +62,23 @@ def handle_add(manufacturer="", product="", serial=""):
         col6.form_submit_button(label='Cancel')
 
 
+def register_a_bridge():
+    with st.expander("Register a bridging device", expanded=False):
+        ip_addr = st.text_input('IP address of the bridging server')
+        name = st.text_input('Name of server (Optional)')
+        register = st.button('Add')
+
+        if register:
+            added = bridge_service.add_bridge(ip_addr, name)
+            if added is not None:
+                error = added["detail"][0]["msg"]
+                field = added["detail"][0]["loc"][1]
+                st.write(f":red[Error with field] :orange[{field}]:")
+                st.write(f":orange[{error}]")
+            else:
+                st.success("Bridging device registered successfully! 🔥")
+
+
 def load_page_info():
     col = st.columns(4)
     col[0].title('Device')
@@ -102,6 +115,8 @@ def list_connected_devices():
 def main():
     load_page_info()
 
+    register_a_bridge()
+
     list_connected_devices()
 
 
@@ -111,6 +126,7 @@ main()
 # List all registered devices
 registered_devices = device_service.get_registered_devices()
 
+<<<<<<< HEAD
 if registered_devices is None:
     st.warning("No registered devices.")
 
