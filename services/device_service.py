@@ -3,6 +3,7 @@ import usb.util
 import requests
 import os
 import json
+import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -61,17 +62,6 @@ def send_add_request(data: dict):
     if res.status_code == 201:
         return None
     return json.loads(res.text)
-=======
-import pandas as pd
-import requests
-import os
-import json
-import pandas as pd
-
-from dotenv import load_dotenv
-load_dotenv()
-
-BACKEND_URL = os.getenv("BACKEND_URL")
     
 
 def get_registered_devices():
