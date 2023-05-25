@@ -133,3 +133,22 @@ for row in registered_devices.sort_values("id").itertuples():
             registered_devices, id, name, connection, installer, compiler, model, description))
         col[9].button("Select", key=f"s_{name}", on_click=None, args=(
             id, name, connection, installer, compiler, model, description))
+
+
+st.header("All registered bridges")
+
+registered_devices = bridge_service.get_registered_bridges()
+
+# col1, col2 = st.columns(2)
+
+col = st.columns(10, gap="small")
+
+col[0].write("Address")
+col[1].write("Name")
+for row in registered_devices.sort_values("address").itertuples():
+    _, address, name = row
+    col = st.columns(10, gap="small")
+    col[0].write(address)
+    # if "selected_device" in state and state.selected_device["id"] == id:
+    #    col[1].write("**"+name+"**")
+    col[1].write(name)
