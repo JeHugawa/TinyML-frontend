@@ -151,14 +151,17 @@ registered_devices = bridge_service.get_registered_bridges()
 
 col = st.columns(10, gap="small")
 
-col[0].write("Address")
-col[1].write("Name")
-for row in registered_devices.sort_values("address").itertuples():
-    _, address, name = row
-    col = st.columns(10, gap="small")
-    col[0].write(address)
-    # if "selected_device" in state and state.selected_device["id"] == id:
-    #    col[1].write("**"+name+"**")
-    col[1].write(name)
-    col[2].button("Select", key=f"s_{address}",
-                  on_click=select_bridge, args=(address))
+if not registered_devices.empty:
+    col[0].write("Address")
+    col[1].write("Name")
+    for row in registered_devices.sort_values("address").itertuples():
+        _, id, address, name = row
+        col = st.columns(10, gap="small")
+
+        col[0].write(id)
+        col[1].write(address)
+        # if "selected_device" in state and state.selected_device["id"] == id:
+        #    col[1].write("**"+name+"**")
+        col[2].write(name)
+        col[3].button("Select", key=f"s_{address}",
+                      on_click=select_bridge, args=(address))

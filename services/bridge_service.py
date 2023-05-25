@@ -20,7 +20,6 @@ def add_bridge(address: str, name: str = None):
 
 def get_registered_bridges():
     res = requests.get(f"{BACKEND_URL}/registered_bridges/")
-    print(res.text)
     data = json.loads(res.text)
     df = pd.read_json(data)
 
