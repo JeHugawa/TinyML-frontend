@@ -1,13 +1,9 @@
 import streamlit as st
-import requests
-
 import os
-import json
-import pandas as pd
 
 from dotenv import load_dotenv
 
-from services import device_service
+from services import device_service, bridge_service
 
 load_dotenv()
 
@@ -49,6 +45,23 @@ def handle_add(manufacturer="", product="", serial=""):
         col6.form_submit_button(label='Cancel')
 
 
+def register_a_bridge():
+    with st.expander("Register a bridging device", expanded=False):
+        ip_addr = st.text_input('IP address of the bridging server')
+        name = st.text_input('Name of server (Optional)')
+        register = st.button('Add')
+
+        if register:
+            added = bridge_service.add_bridge(ip_addr, name)
+            if added is not None:
+                error = added["detail"][0]["msg"]
+                field = added["detail"][0]["loc"][1]
+                st.write(f":red[Error with field] :orange[{field}]:")
+                st.write(f":orange[{error}]")
+            else:
+                st.success("Bridging device registered successfully! 🔥")
+
+
 def load_page_info():
     col = st.columns(4)
     col[0].title('Device')
@@ -85,8 +98,11 @@ def list_connected_devices():
 def main():
     load_page_info()
 
+    register_a_bridge()
+
     list_connected_devices()
-    
+
+
 main()
 
 
@@ -111,10 +127,9 @@ for row in registered_devices.sort_values("id").itertuples():
         col[4].write(compiler)
         col[5].write(model)
         col[6].write(description)
-        col[7].button("Delete", key=name, on_click=None, args=(registered_devices, id))
+        col[7].button("Delete", key=name, on_click=None,
+                      args=(registered_devices, id))
         col[8].button("Modify", key=f'm_{name}', on_click=None, args=(
             registered_devices, id, name, connection, installer, compiler, model, description))
         col[9].button("Select", key=f"s_{name}", on_click=None, args=(
             id, name, connection, installer, compiler, model, description))
-
-
