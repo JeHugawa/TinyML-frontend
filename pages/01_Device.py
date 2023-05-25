@@ -12,8 +12,11 @@ st.set_page_config(
 state = st.session_state
 
 def remove_device(*args):
-    device_service.remove(*args)
-    st.success("Device removed successfully.")
+    try:
+        device_service.remove(*args)
+        st.success("Device removed successfully.")
+    except:
+        st.error("Could not remove device.")
 
 # List all registered devices
 registered_devices = device_service.get_registered_devices()

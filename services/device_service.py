@@ -17,10 +17,13 @@ def get_registered_devices():
     
     if df.empty: 
         return None
-    
+
     return df
 
 def remove(*args):
     device_id = ''.join(args)
     response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
+    
+    if response.status_code == 400:
+        raise ValueError()
     
