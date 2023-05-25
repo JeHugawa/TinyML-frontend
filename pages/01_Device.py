@@ -126,7 +126,6 @@ main()
 # List all registered devices
 registered_devices = device_service.get_registered_devices()
 
-<<<<<<< HEAD
 if registered_devices is None:
     st.warning("No registered devices.")
 
