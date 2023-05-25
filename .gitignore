@@ -1,4 +1,9 @@
 venv
 .env
+frontend.Dockerfile
+docker-compose.yml
+
+# Directories
+__pycache__
 robot_output
 .vscode

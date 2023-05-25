@@ -14,8 +14,10 @@ GitPython==3.1.31
 h11==0.14.0
 idna==3.4
 importlib-metadata==6.6.0
+importlib-resources==5.12.0
 Jinja2==3.1.2
 jsonschema==4.17.3
+libusb==1.0.26b5
 markdown-it-py==2.2.0
 MarkupSafe==2.1.2
 mdurl==0.1.2
@@ -24,6 +26,7 @@ outcome==1.2.0
 packaging==23.1
 pandas==2.0.1
 Pillow==9.5.0
+pkg-about==1.0.8
 protobuf==3.20.3
 pyarrow==12.0.0
 pydeck==0.8.1b0
@@ -34,6 +37,7 @@ PySocks==1.7.1
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 pytz==2023.3
+pyusb==1.2.1
 requests==2.31.0
 rich==13.3.5
 robotframework==6.0.2
@@ -47,6 +51,7 @@ sortedcontainers==2.4.0
 streamlit==1.22.0
 tenacity==8.2.2
 toml==0.10.2
+tomli==2.0.1
 toolz==0.12.0
 tornado==6.3.2
 trio==0.22.0
