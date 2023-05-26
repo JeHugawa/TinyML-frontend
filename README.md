@@ -10,7 +10,7 @@ the frontend container
 ## Running
 
 ## Testing
-For testing you need to have both the backend and frontend running. 
+For testing you need to have both the backend, frontend running and bridge.
 
 Run Robot Framework tests with:
 ```
