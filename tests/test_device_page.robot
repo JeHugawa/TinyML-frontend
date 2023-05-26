@@ -1,6 +1,7 @@
 *** Settings ***
 Resource          resource.robot
 Suite Setup       Open Browser With DeviceUrl
+Suite Teardown    Close Browser
 
 *** Test Cases ***
 Check Header For Registered Devices Table
