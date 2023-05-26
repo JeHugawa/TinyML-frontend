@@ -3,6 +3,7 @@ import os
 import json
 import pandas as pd
 
+
 BACKEND_URL = os.getenv("BACKEND_URL")
 
 
@@ -24,3 +25,13 @@ def get_registered_bridges():
     df = pd.read_json(data)
 
     return df
+
+
+def try_conntection(address: str):
+    if "http" not in address:
+        address = "http://" + address
+    try:
+        requests.get(address)
+        return True
+    except requests.exceptions.ConnectionError:
+        return False
