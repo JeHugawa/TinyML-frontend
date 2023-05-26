@@ -30,6 +30,6 @@ Remove Last Device in the List Test
 
     Wait Until Page Contains Element    ${delete_buttons[-1]}
     Click Element    ${delete_buttons[-1]}
-    Page Should Not Contain    remove me
+    Page Should Contain    Device removed successfully.
     Close Browser
 
