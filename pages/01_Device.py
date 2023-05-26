@@ -15,9 +15,8 @@ BACKEND_URL = os.getenv("BACKEND_URL")
 
 # Page setup
 st.set_page_config(
-    page_title='Device',
-    page_icon='✅',
-    layout='wide'
+    page_title="Devices",
+    layout="wide"
 )
 
 state = st.session_state
@@ -62,13 +61,13 @@ def handle_add(manufacturer="", product="", serial=""):
         st.text_input("Description", key="description")
 
         col1, col2, col3, col4, col5, col6 = st.columns(6)
-        col1.form_submit_button(label='Add', on_click=submit_add)
-        col6.form_submit_button(label='Cancel')
+        col1.form_submit_button(label="Add", on_click=submit_add)
+        col6.form_submit_button(label="Cancel")
 
 
 def load_page_info():
     col = st.columns(4)
-    col[0].title('Device')
+    col[0].title("Device")
     with col[-1].expander("ℹ️ Help"):
         st.markdown("On this page you can connect to a bridging device.")
         st.markdown(
@@ -134,7 +133,7 @@ else:
             col[6].write(description)
             col[7].button("Remove", key=name, on_click=remove_device, args=(
                 str(id)))  # args in st.buttons is always a tuple of strings
-            col[8].button("Modify", key=f'm_{name}', on_click=None, args=(
+            col[8].button("Modify", key=f"m_{name}", on_click=None, args=(
                 registered_devices, id, name, connection, installer, compiler, model, description))
             col[9].button("Select", key=f"s_{name}", on_click=select_device, args=(
                 id, name, connection, installer, compiler, model, description))
