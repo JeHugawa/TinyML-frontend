@@ -8,8 +8,8 @@ Check Header For Registered Devices Table
 
 Check That Registered Devices Table Is Not Empty
     Page Should Contain     Espressif ESP-EYE
-    # Get Table Cell    locator    1    1
-    
+
+Check That Device Can Be Selected
     Wait Until Page Contains Element    xpath://*[text()="Select"]
 
     @{select_buttons}=    Get WebElements    xpath://*[text()="Select"]
