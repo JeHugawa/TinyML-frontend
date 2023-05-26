@@ -1,22 +1,45 @@
 import streamlit as st
+import json
 from services import data_service
+
 
 st.set_page_config(
     page_title="Data", 
+    page_icon="✅", 
     layout="wide"
     )
 
-# List all registered devices
-st.header("Existing datasets")
-name_data = data_service.get_dataset_names()
-st.table(name_data)
+def list_all_datasets():
+    st.header("Existing datasets")
+    name_data = data_service.get_dataset_names()
+    st.table(name_data)
 
-st.header("Data")
+def select_dataset():
+    data = data_service.get_dataset_names_size()
+    st.session_state['selected_dataset'] = st.selectbox('Select a dataset: ', [dict()]+data, format_func=data_service.format_datasets)
+    if st.session_state["selected_dataset"]:
+        st.write('You selected:', st.session_state['selected_dataset'])
+    else:   
+        st.write("No dataset selected")
 
-if "selected_dataset" not in st.session_state:
-    st.session_state["selected_dataset"] = None
-    
-data = data_service.get_dataset_names_size()
-st.session_state["selected_dataset"] = st.selectbox("Select a dataset: ", data, format_func=data_service.format_datasets)
+def add_image_to_dataset():
+    if st.session_state["selected_dataset"]:
+        st.header("Add image to dataset")
+        uploaded_file = st.file_uploader("Choose a file")
+        if uploaded_file is not None:
+            if data_service.add_image_to_dataset(st.session_state["selected_dataset"],json.dumps(dict())) is None:
+                st.write("Success! :fire:")
+            else:
+                a = json.dumps(dict())
+                st.write(type(a))
+                st.write("Failure!")
 
-st.success(f"You selected: {st.session_state['selected_dataset']['name']} dataset, size {st.session_state['selected_dataset']['size']}")
+def main():
+    st.header("Data")
+    list_all_datasets()
+    select_dataset()
+    add_image_to_dataset()
+
+main()
+
+
