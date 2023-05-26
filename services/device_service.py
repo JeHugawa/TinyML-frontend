@@ -69,7 +69,16 @@ def get_registered_devices():
     data = json.loads(response.text)
     df = pd.read_json(data)
     
+    if df.empty: 
+        return None
+
     return df
 
-def show_registered_devices():
-    pass
+
+def remove(*args):
+    device_id = ''.join(args)
+    response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
+    
+    if response.status_code == 400:
+        raise ValueError()
+ 
