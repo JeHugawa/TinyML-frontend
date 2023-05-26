@@ -22,6 +22,15 @@ st.set_page_config(
 
 state = st.session_state
 
+def select_device(*args):
+    state.device_id = args[0]
+    state.device_name = args[1]
+    state.connection = args[2]
+    state.installer = args[3]
+    state.compiler = args[4]
+    state.model = args[5]
+    state.description = args[6]
+    st.success(f"You have selected **{state.device_id} / {state.device_name} / {state.installer} / {state.connection}**.")
 
 def remove_device(*args):
     try:
@@ -128,5 +137,5 @@ else:
             col[7].button("Remove", key=name, on_click=remove_device, args=(str(id))) # args in st.buttons is always a tuple of strings
             col[8].button("Modify", key=f'm_{name}', on_click=None, args=(
                 registered_devices, id, name, connection, installer, compiler, model, description))
-            col[9].button("Select", key=f"s_{name}", on_click=None, args=(
+            col[9].button("Select", key=f"s_{name}", on_click=select_device, args=(
                 id, name, connection, installer, compiler, model, description))
