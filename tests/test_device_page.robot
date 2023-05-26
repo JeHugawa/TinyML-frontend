@@ -42,3 +42,18 @@ Check That Register Device Button Opens Form
     Page Should Not Contain     Add a new device
     Click Button    Register this device
     Page Should Contain    Add a new device
+<<<<<<< HEAD
+=======
+
+Check Page Contains Register A Bridge
+    Page Should Contain    Register a bridging device
+
+Check Form To Register Bridge Opens Up
+    Page Should Not Contain    IP address of the bridging server
+    Click Element        //*[contains(text(),'Register a bridging device')]
+    Page Should Contain    IP address of the bridging server
+
+Selecting A Bridge Is Successful
+    Click Element    //*[contains(text(),"Select bridge")]
+    Page Should Contain    Successfully selected bridge
+>>>>>>> 82ae679 (Robot tests for bridges)
