@@ -163,5 +163,5 @@ if not registered_devices.empty:
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Select", key=f"s_{address}",
+        col[3].button("Select bridge", key=f"s_{address}",
                       on_click=select_bridge, args=(address))
