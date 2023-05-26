@@ -18,3 +18,18 @@ Check That Registered Devices Table Is Not Empty
     # Get Table Cell    locator    1    1
 
 
+Remove Last Device in the List Test
+    Open Browser    about:blank    ${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed              ${DELAY}
+    Go To                           ${URL}    
+    
+    Wait Until Page Contains Element    xpath://*[text()="Remove"]
+
+    @{delete_buttons}=    Get WebElements    xpath://*[text()="Remove"]
+
+    Wait Until Page Contains Element    ${delete_buttons[-1]}
+    Click Element    ${delete_buttons[-1]}
+    Page Should Not Contain    remove me
+    Close Browser
+
