@@ -23,6 +23,11 @@ def find_usb_devices():
         Function returns the found connected usb devices
     """
 
+    if os.environ.get("ROBOT_TESTS") == "true":
+        return [{'manufacturer': 'Arduino',
+                 'product': 'Nano 33 BLE',
+                 'serial': '707B266C064B14F6'}]
+
     all_devices = list(usb.core.find(find_all=True))
 
     devices = []
@@ -62,14 +67,14 @@ def send_add_request(data: dict):
     if res.status_code == 201:
         return None
     return json.loads(res.text)
-    
+
 
 def get_registered_devices():
     response = requests.get(f"{BACKEND_URL}/registered_devices/")
     data = json.loads(response.text)
     df = pd.read_json(data)
-    
-    if df.empty: 
+
+    if df.empty:
         return None
 
     return df
@@ -78,7 +83,6 @@ def get_registered_devices():
 def remove(*args):
     device_id = ''.join(args)
     response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
-    
+
     if response.status_code == 400:
         raise ValueError()
- 
