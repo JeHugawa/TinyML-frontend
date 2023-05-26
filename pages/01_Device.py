@@ -20,7 +20,8 @@ state = st.session_state
 
 if "bridge" in state:
     st.success(f"Successfully selected bridge {state.bridge}")
-
+elif "bridge_fail" in state:
+    st.error("Error while trying to connect to bridge.\n Please make sure that the bridge is active.")
 
 def submit_add():
     state.added = device_service.send_add_request({
@@ -50,7 +51,10 @@ def handle_add(manufacturer="", product="", serial=""):
 
 def select_bridge(*address):
     address = "".join(address)
-    state.bridge = address
+    if bridge_service.try_conntection(address):
+        state.bridge = address
+    else:
+        state.bridge_fail = "true"
 
 
 def register_a_bridge():
