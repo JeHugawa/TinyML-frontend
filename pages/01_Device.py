@@ -21,7 +21,7 @@ if "bridge" in state:
     st.success(f"Successfully selected bridge {state.bridge}")
 elif "bridge_fail" in state:
     st.error("Error while trying to connect to bridge.\n Please make sure that the bridge is active.")
-=======
+
 def select_device(*args):
     state.device_id = args[0]
     state.device_name = args[1]
