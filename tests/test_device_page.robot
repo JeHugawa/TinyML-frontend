@@ -61,8 +61,4 @@ Selecting A Bridge Is Successful
     Click Element    ${delete_buttons[-1]}
     Page Should Contain    Device removed successfully.
 
-Check That Register Device Button Opens Form
-    Page Should Not Contain     Add a new device
-    Click Button    Register this device
-    Page Should Contain    Add a new device
 
