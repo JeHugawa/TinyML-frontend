@@ -1,9 +1,9 @@
 name: Pylint for Frontend
 run-name: Testing code quality of frontend
-on: [push]
-  # push:
-    # branches:
-      # - main
+on:
+  push:
+    branches:
+      - main
 jobs:
   Run-pylint-send-dispatch:
     runs-on: ubuntu-latest
