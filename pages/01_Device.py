@@ -11,9 +11,8 @@ BACKEND_URL = os.getenv("BACKEND_URL")
 
 # Page setup
 st.set_page_config(
-    page_title='Device',
-    page_icon='✅',
-    layout='wide'
+    page_title="Devices",
+    layout="wide"
 )
 
 state = st.session_state
@@ -22,7 +21,25 @@ if "bridge" in state:
     st.success(f"Successfully selected bridge {state.bridge}")
 elif "bridge_fail" in state:
     st.error("Error while trying to connect to bridge.\n Please make sure that the bridge is active.")
+=======
+def select_device(*args):
+    state.device_id = args[0]
+    state.device_name = args[1]
+    state.connection = args[2]
+    state.installer = args[3]
+    state.compiler = args[4]
+    state.model = args[5]
+    state.description = args[6]
+    st.success(f"You have selected **{state.device_id} / {state.device_name} / {state.installer} / {state.connection}**.")
 
+def remove_device(*args):
+    try:
+        device_service.remove(*args)
+        st.success("Device removed successfully.")
+    except:
+        st.error("Could not remove device.")
+
+        
 def submit_add():
     state.added = device_service.send_add_request({
         "name": state.device_name,
@@ -45,8 +62,8 @@ def handle_add(manufacturer="", product="", serial=""):
         st.text_input("Description", key="description")
 
         col1, col2, col3, col4, col5, col6 = st.columns(6)
-        col1.form_submit_button(label='Add', on_click=submit_add)
-        col6.form_submit_button(label='Cancel')
+        col1.form_submit_button(label="Add", on_click=submit_add)
+        col6.form_submit_button(label="Cancel")
 
 
 def select_bridge(*address):
@@ -76,7 +93,7 @@ def register_a_bridge():
 
 def load_page_info():
     col = st.columns(4)
-    col[0].title('Device')
+    col[0].title("Device")
     with col[-1].expander("ℹ️ Help"):
         st.markdown("On this page you can connect to a bridging device.")
         st.markdown(
@@ -119,9 +136,8 @@ main()
 
 
 # List all registered devices
-st.header("All registered devices")
-
 registered_devices = device_service.get_registered_devices()
+
 
 col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
 
@@ -169,3 +185,32 @@ if not registered_devices.empty:
         col[2].write(name)
         col[3].button("Select bridge", key=f"s_{address}",
                       on_click=select_bridge, args=(address))
+
+if registered_devices is None:
+    st.warning("No registered devices.")
+
+else:
+    st.header("All registered devices")
+    col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+
+    for row in registered_devices.sort_values("id").itertuples():
+        index, id, name, connection, installer, compiler, model, description = row
+        col = st.columns(10)
+        col[0].write(id)
+        # make selected device name bold
+        if "selected_device" in state and state.selected_device["id"] == id:
+            col[1].write("**"+name+"**")
+        else:
+            col[1].write(name)
+            col[2].write(connection)
+            col[3].write(installer)
+            col[4].write(compiler)
+            col[5].write(model)
+            col[6].write(description)
+            col[7].button("Remove", key=name, on_click=remove_device, args=(
+                str(id)))  # args in st.buttons is always a tuple of strings
+            col[8].button("Modify", key=f"m_{name}", on_click=None, args=(
+                registered_devices, id, name, connection, installer, compiler, model, description))
+            col[9].button("Select", key=f"s_{name}", on_click=select_device, args=(
+                id, name, connection, installer, compiler, model, description))
+

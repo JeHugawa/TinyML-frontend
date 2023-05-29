@@ -34,6 +34,7 @@ Remove Last Device in the List Test
 
     @{delete_buttons}=    Get WebElements    xpath://*[text()="Remove"]
 
+
     Wait Until Page Contains Element    ${delete_buttons[-1]}
     Click Element    ${delete_buttons[-1]}
     Page Should Contain    Device removed successfully.
@@ -54,3 +55,14 @@ Check Form To Register Bridge Opens Up
 Selecting A Bridge Is Successful
     Click Element    //*[contains(text(),"Select bridge")]
     Page Should Contain    Successfully selected bridge
+
+
+    Wait Until Page Contains Element    ${delete_buttons[-1]}
+    Click Element    ${delete_buttons[-1]}
+    Page Should Contain    Device removed successfully.
+
+Check That Register Device Button Opens Form
+    Page Should Not Contain     Add a new device
+    Click Button    Register this device
+    Page Should Contain    Add a new device
+
