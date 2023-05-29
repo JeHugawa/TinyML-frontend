@@ -9,6 +9,31 @@ the frontend container
 
 ## Running
 
+Run backend from [this repository](https://github.com/TinyMLaas/TinyML-backend)
+
+Activate virtual environment with:
+
+```
+source /venv/bin/activate
+```
+Install dependencies with:
+
+```
+pip install requirements.txt
+```
+
+Create an .env file in frontend root directory that points to backend:
+
+```
+BACKEND_URL = "http://localhost:8000"
+```
+
+Run frontend with:
+
+```
+streamlit run TinyMLaaS.py
+```
+
 ## Testing
 For testing you need to have both the backend, frontend running and bridge.
 
