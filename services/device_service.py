@@ -74,6 +74,13 @@ def get_registered_devices():
     data = json.loads(response.text)
     df = pd.read_json(data)
 
+
+    return df
+
+
+def show_registered_devices():
+    pass
+
     if df.empty:
         return None
 
