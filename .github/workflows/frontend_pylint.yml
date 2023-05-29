@@ -6,7 +6,7 @@ on: [push]
       # - main
 jobs:
   Run pylint and send dispatch:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
