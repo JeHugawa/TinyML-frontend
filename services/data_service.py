@@ -4,11 +4,7 @@ import os
 import json
 import pandas as pd
 
-from dotenv import load_dotenv
-load_dotenv()
-
-BACKEND_URL = os.getenv("BACKEND_URL")
-    
+from config import BACKEND_URL    
 
 def get_dataset_names():
     response = requests.get(f"{BACKEND_URL}/dataset_names/")

@@ -1,16 +1,11 @@
 import usb.core
 import usb.util
 import requests
-import os
 import json
 import pandas as pd
-from dotenv import load_dotenv
+import os
 
-load_dotenv()
-
-BACKEND_URL = os.getenv("BACKEND_URL")  # "http://backend:8000/"
-
-ACCEPTED_VENDORS = ["Raspberry Pi", "Arduino"]
+from config import BACKEND_URL
 
 
 def find_usb_devices():
