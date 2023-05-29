@@ -1,9 +1,5 @@
 import streamlit as st
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-BACKEND_URL = os.getenv("BACKEND_URL")
+from config import BACKEND_URL
 
 st.set_page_config(
     page_title="Observing", 

@@ -1,13 +1,8 @@
 import streamlit as st
-import os
-
-from dotenv import load_dotenv
 
 from services import device_service, bridge_service
 
-load_dotenv()
 
-BACKEND_URL = os.getenv("BACKEND_URL")
 
 # Page setup
 st.set_page_config(
