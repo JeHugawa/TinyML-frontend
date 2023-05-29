@@ -30,7 +30,6 @@ datasets = data_service.get_dataset_names()
 
 devices = device_service.get_registered_devices()
 
-st.write(devices)
 st.write(devices.shape[0], "Devices registered")
-st.write(datasets.shape[0], "Datasets available")
+st.write(len(datasets["dataset_names"]), " Datasets saved")
 
