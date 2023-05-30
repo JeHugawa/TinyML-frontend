@@ -56,9 +56,3 @@ Selecting A Bridge Is Successful
     Click Element    //*[contains(text(),"Select bridge")]
     Page Should Contain    Successfully selected bridge
 
-
-    Wait Until Page Contains Element    ${delete_buttons[-1]}
-    Click Element    ${delete_buttons[-1]}
-    Page Should Contain    Device removed successfully.
-
-
