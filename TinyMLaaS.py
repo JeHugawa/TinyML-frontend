@@ -1,14 +1,12 @@
+import streamlit as st
+import requests
 import os
 import json
-import requests
 import streamlit as st
 import pandas as pd
 
-from dotenv import load_dotenv
-load_dotenv()
-
-BACKEND_URL = os.getenv("BACKEND_URL")
-
+from config import BACKEND_URL
+from services import data_service, device_service
 
 # Page setup
 st.set_page_config(
@@ -34,11 +32,10 @@ st.map(device_locations[["latitude", "longitude"]], zoom=13)
 
 st.header("Statistical Data")
 
-data = requests.get(f"{BACKEND_URL}/dataset_names/")
-datasets = json.loads(data.text)
+datasets = data_service.get_dataset_names() 
 
-data = requests.get(f"{BACKEND_URL}/registered_devices/")
-devices = json.loads(data.text)
+devices = device_service.get_registered_devices()
 
-st.write(devices.count("id"), " Devices registered")
+st.write(devices.shape[0], "Devices registered")
 st.write(len(datasets["dataset_names"]), " Datasets saved")
+
