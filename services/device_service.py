@@ -66,8 +66,7 @@ def send_add_request(data: dict):
 
 def get_registered_devices():
     response = requests.get(f"{BACKEND_URL}/registered_devices/")
-    data = json.loads(response.text)
-    df = pd.read_json(data)
+    df = pd.read_json(response.text)
 
 
     return df
