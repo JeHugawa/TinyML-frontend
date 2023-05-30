@@ -135,46 +135,20 @@ def main():
 main()
 
 
-# List all registered devices
-registered_devices = device_service.get_registered_devices()
-
-
-col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
-
-for row in registered_devices.sort_values("id").itertuples():
-    index, id, name, connection, installer, compiler, model, description = row
-    col = st.columns(10)
-    col[0].write(id)
-    # make selected device name bold
-    if "selected_device" in state and state.selected_device["id"] == id:
-        col[1].write("**"+name+"**")
-    else:
-        col[1].write(name)
-        col[2].write(connection)
-        col[3].write(installer)
-        col[4].write(compiler)
-        col[5].write(model)
-        col[6].write(description)
-        col[7].button("Delete", key=name, on_click=None,
-                      args=(registered_devices, id))
-        col[8].button("Modify", key=f'm_{name}', on_click=None, args=(
-            registered_devices, id, name, connection, installer, compiler, model, description))
-        col[9].button("Select", key=f"s_{name}", on_click=None, args=(
-            id, name, connection, installer, compiler, model, description))
 
 
 st.header("All registered bridges")
 
-registered_devices = bridge_service.get_registered_bridges()
+registered_bridges = bridge_service.get_registered_bridges()
 
 # col1, col2 = st.columns(2)
 
 col = st.columns(10, gap="small")
 
-if not registered_devices.empty:
+if not registered_bridges.empty:
     col[0].write("Address")
     col[1].write("Name")
-    for row in registered_devices.sort_values("address").itertuples():
+    for row in registered_bridges.sort_values("address").itertuples():
         _, id, address, name = row
         col = st.columns(10, gap="small")
 
@@ -185,6 +159,8 @@ if not registered_devices.empty:
         col[2].write(name)
         col[3].button("Select bridge", key=f"s_{address}",
                       on_click=select_bridge, args=(address))
+
+registered_devices = device_service.get_registered_devices()
 
 if registered_devices is None:
     st.warning("No registered devices.")
