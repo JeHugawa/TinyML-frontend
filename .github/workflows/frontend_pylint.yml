@@ -19,7 +19,7 @@ jobs:
         run: pylint --fail-under=9.0 pages TinyMLaaS.py services
   Repository-dispatch:
       # Only run if tests succeed and the branch in main
-      if: ${{ always() && contains(join(needs.*.result, ','), 'success') }} && (github.ref == 'refs/heads/main')
+      if: (needs.Run-pylint == 'success') && (github.ref == 'refs/heads/main')
       needs: Run-pylint
       runs-on: ubuntu-latest
       steps:
