@@ -1,3 +1,4 @@
+
 *** Settings ***
 Resource          resource.robot
 Suite Setup       Open Browser With DeviceUrl
