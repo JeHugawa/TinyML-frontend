@@ -19,4 +19,13 @@ def get_dataset_names_size():
 
 
 def format_datasets(dataset):
+    if dataset == {}:
+        return ""
     return dataset["name"] + " size: " + dataset["size"]
+
+def add_image_to_dataset(dataset,image):
+    response = requests.put(f"{BACKEND_URL}/add_image",data=image)
+    if response.status_code == 201:
+        return "Success"
+    if response.status_code == 404:
+        return "Not implemented"

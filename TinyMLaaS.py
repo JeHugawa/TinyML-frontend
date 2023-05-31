@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import os
 import json
-import streamlit as st
 import pandas as pd
 
 from config import BACKEND_URL

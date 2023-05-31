@@ -1,3 +1,4 @@
+
 *** Settings ***
 Resource          resource.robot
 Suite Setup       Open Browser With DeviceUrl
@@ -55,4 +56,3 @@ Check Form To Register Bridge Opens Up
 Selecting A Bridge Is Successful
     Click Element    //*[contains(text(),"Select bridge")]
     Page Should Contain    Successfully selected bridge
-
