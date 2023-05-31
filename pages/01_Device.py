@@ -12,6 +12,7 @@ st.set_page_config(
 
 state = st.session_state
 
+
 if "bridge" in state:
     st.success(f"Successfully selected bridge {state.bridge}")
 elif "bridge_fail" in state:
@@ -36,7 +37,7 @@ def remove_device(*args):
 
         
 def submit_add():
-    state.added = device_service.send_add_request({
+    added_device = device_service.send_add_request({
         "name": state.device_name,
         "connection": state.connection,
         "installer": state.installer,
@@ -44,6 +45,9 @@ def submit_add():
         "model": state.model,
         "description": state.description
     })
+    
+    state.device_id = (dict(added_device)["id"])
+    
 
 
 def handle_add(manufacturer="", product="", serial=""):
