@@ -27,12 +27,8 @@ def add_image_to_dataset():
         st.header("Add image to dataset")
         uploaded_file = st.file_uploader("Choose a file")
         if uploaded_file is not None:
-            if data_service.add_image_to_dataset(st.session_state["selected_dataset"],json.dumps(dict())) is None:
-                st.write("Success! :fire:")
-            else:
-                a = json.dumps(dict())
-                st.write(type(a))
-                st.write("Failure!")
+            st.warning(data_service.add_image_to_dataset(st.session_state["selected_dataset"],json.dumps(dict())))
+
 
 def main():
     st.header("Data")
