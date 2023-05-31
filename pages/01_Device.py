@@ -164,11 +164,11 @@ try:
     registered_devices = device_service.get_registered_devices()
 
     st.header("All registered devices")
-
+    
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
 
     for row in registered_devices.sort_values("id").itertuples():
-        index, model, connection, compiler, name,  installer, description, id = row
+        index, name, connection, installer, compiler, model, description, id = row
         col = st.columns(10)
         col[0].write(id)
         # make selected device name bold
