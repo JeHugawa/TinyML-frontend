@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import streamlit as st
 import requests
-=======
 import os
->>>>>>> 0c83948 (appease pylint)
 import json
-import requests
-import streamlit as st
 import pandas as pd
 
 from config import BACKEND_URL

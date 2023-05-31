@@ -184,3 +184,4 @@ else:
                 registered_devices, id, name, connection, installer, compiler, model, description))
             col[9].button("Select", key=f"s_{name}", on_click=select_device, args=(
                 id, name, connection, installer, compiler, model, description))
+

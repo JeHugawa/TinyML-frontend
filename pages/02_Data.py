@@ -37,5 +37,3 @@ def main():
     add_image_to_dataset()
 
 main()
-
-
