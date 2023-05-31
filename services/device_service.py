@@ -65,6 +65,8 @@ def send_add_request(data: dict):
 
 
 def get_registered_devices():
+    """Return a list of all registered devices on backend"""
+    
     response = requests.get(f"{BACKEND_URL}/registered_devices/")
 
     if response.text == []:
@@ -75,7 +77,13 @@ def get_registered_devices():
     return df
 
 
-def remove(*args):
+def remove_device(*args):
+    """Removes device from backend based on device_id.
+    
+    Args:
+        *args: device_id as a tuple
+    """
+    
     device_id = ''.join(args)
     response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
 
