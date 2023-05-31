@@ -5,7 +5,7 @@ import json
 import pandas as pd
 import os
 
-from config import BACKEND_URL
+from config import BACKEND_URL, ACCEPTED_VENDORS
 
 
 def find_usb_devices():
@@ -68,7 +68,6 @@ def get_registered_devices():
     response = requests.get(f"{BACKEND_URL}/registered_devices/")
     data = json.loads(response.text)
     df = pd.read_json(data)
-
 
     return df
 
