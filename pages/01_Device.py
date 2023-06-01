@@ -26,7 +26,7 @@ def select_device(*args):
     state.compiler = args[4]
     state.model = args[5]
     state.description = args[6]
-    st.success(f"You have selected **{state.device_id} / {state.device_name} / {state.installer} / {state.connection}**.")
+    st.success(f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
 
 def remove_device(*args):
     try:
@@ -43,10 +43,12 @@ def submit_add():
         "installer": state.installer,
         "compiler": state.compiler,
         "model": state.model,
-        "description": state.description
+        "description": state.description,
+        "serial": state.serial
     })
     
-    state.device_id = (dict(added_device)["id"])
+    state.device_id = (added_device["id"])
+    st.success(f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
     
 
 
@@ -59,6 +61,7 @@ def handle_add(manufacturer="", product="", serial=""):
         st.text_input("Compiler", key="compiler")
         st.text_input("Model", key="model", value=product)
         st.text_input("Description", key="description")
+        st.text_input("Serial number", key="serial", value=serial)
 
         col1, col2, col3, col4, col5, col6 = st.columns(6)
         col1.form_submit_button(label="Add", on_click=submit_add)
@@ -142,7 +145,7 @@ registered_bridges = bridge_service.get_registered_bridges()
 
 # col1, col2 = st.columns(2)
 
-col = st.columns(10, gap="small")
+col = st.columns(10, gap="small")      
 
 if not registered_bridges.empty:
     col[0].write("Address")
@@ -162,30 +165,31 @@ if not registered_bridges.empty:
 
 try:
     registered_devices = device_service.get_registered_devices()
-
+    
     st.header("All registered devices")
     
-    col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+    col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
     for row in registered_devices.sort_values("id").itertuples():
-        index, name, connection, installer, compiler, model, description, id = row
-        col = st.columns(10)
+        index, name, connection, installer, compiler, model, description, serial, id = row
+        col = st.columns(11)
         col[0].write(id)
         # make selected device name bold
-        if "selected_device" in state and state.selected_device["id"] == id:
-            col[1].write("**"+name+"**")
-        else:
-            col[1].write(name)
-            col[2].write(connection)
-            col[3].write(installer)
-            col[4].write(compiler)
-            col[5].write(model)
-            col[6].write(description)
-            col[7].button("Remove", key=f"r_{id}_{name}", on_click=remove_device, args=(
-                str(id)))  # args in st.buttons is always a tuple of strings
-            col[8].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
-                registered_devices, id, name, connection, installer, compiler, model, description))
-            col[9].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
+        # if "device_id" in state and device_id == id:
+        #     col[1].write("**"+name+"**")
+        # else:
+        # col[1].write(name)
+        col[2].write(connection)
+        col[3].write(installer)
+        col[4].write(compiler)
+        col[5].write(model)
+        col[6].write(description)
+        col[7].write(serial)
+        col[8].button("Remove", key=f"r_{id}_{name}", on_click=remove_device, args=(
+            str(id)))  # args in st.buttons is always a tuple of strings
+        col[9].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
+            registered_devices, id, name, connection, installer, compiler, model, description))
+        col[10].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
                 id, name, connection, installer, compiler, model, description))
 except:
     st.warning("No registered devices.")
