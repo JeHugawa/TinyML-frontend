@@ -76,6 +76,14 @@ def select_bridge(*address):
         state.bridge_fail = "true"
 
 
+def remove_bridge(*args):
+    try:
+        bridge_service.remove_bridge(*args)
+        st.success("Bridge removed successfully.")
+    except:
+        st.error("Could not remove bridge.")
+
+
 def register_a_bridge():
     with st.expander("Register a bridging device", expanded=False):
         ip_addr = st.text_input('IP address of the bridging server')
@@ -137,39 +145,48 @@ def main():
 main()
 
 
-
-
 st.header("All registered bridges")
 
 registered_bridges = bridge_service.get_registered_bridges()
 
-# col1, col2 = st.columns(2)
+col1, col2 = st.columns(2)
 
 col = st.columns(10, gap="small")      
 
 if not registered_bridges.empty:
-    col[0].write("Address")
-    col[1].write("Name")
-    for row in registered_bridges.sort_values("address").itertuples():
-        _, id, address, name = row
+    col[0].write("Id")
+    col[1].write("Address")
+    col[2].write("Name")
+    for row in registered_bridges.sort_values("id").itertuples():
+        _, ip_address, name, id = row
         col = st.columns(10, gap="small")
 
         col[0].write(id)
-        col[1].write(address)
+        col[1].write(ip_address)
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Select bridge", key=f"s_{address}",
-                      on_click=select_bridge, args=(address))
+        col[3].button("Remove", key=f"r_{ip_address}",
+                      on_click=remove_bridge, args=(str(id)))
+        col[4].button("Select", key=f"s_{ip_address}",
+                      on_click=select_bridge, args=(ip_address))
 
+
+st.header("All registered devices")
 
 try:
     registered_devices = device_service.get_registered_devices()
     
-    st.header("All registered devices")
-    
     col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
+    col = st.columns(11)#, gap="small")
+    col[0].write("Id")
+    col[1].write("Connection")
+    col[2].write("Installer")
+    col[3].write("Compiler")
+    col[4].write("Model")
+    col[5].write("Description")
+    col[6].write("Serial number")
     for row in registered_devices.sort_values("id").itertuples():
         index, name, connection, installer, compiler, model, description, serial, id = row
         col = st.columns(11)
@@ -179,17 +196,17 @@ try:
         #     col[1].write("**"+name+"**")
         # else:
         # col[1].write(name)
-        col[2].write(connection)
-        col[3].write(installer)
-        col[4].write(compiler)
-        col[5].write(model)
-        col[6].write(description)
-        col[7].write(serial)
-        col[8].button("Remove", key=f"r_{id}_{name}", on_click=remove_device, args=(
+        col[1].write(connection)
+        col[2].write(installer)
+        col[3].write(compiler)
+        col[4].write(model)
+        col[5].write(description)
+        col[6].write(serial)
+        col[7].button("Remove", key=f"r_{id}_{name}", on_click=remove_device, args=(
             str(id)))  # args in st.buttons is always a tuple of strings
-        col[9].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
+        col[8].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
             registered_devices, id, name, connection, installer, compiler, model, description))
-        col[10].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
+        col[9].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
                 id, name, connection, installer, compiler, model, description))
 except:
     st.warning("No registered devices.")
