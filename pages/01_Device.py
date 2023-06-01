@@ -93,11 +93,6 @@ def register_a_bridge():
         if register:
             added = bridge_service.add_bridge(ip_addr, name)
             if added is not None:
-                error = added["detail"][0]["msg"]
-                field = added["detail"][0]["loc"][1]
-                st.write(f":red[Error with field] :orange[{field}]:")
-                st.write(f":orange[{error}]")
-            else:
                 st.success("Bridging device registered successfully! 🔥")
 
 
@@ -166,9 +161,9 @@ if not registered_bridges.empty:
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Remove", key=f"r_{ip_address}",
+        col[3].button("Remove", key=f"r_{ip_address}_{id}",
                       on_click=remove_bridge, args=(str(id)))
-        col[4].button("Select", key=f"s_{ip_address}",
+        col[4].button("Select", key=f"s_{ip_address}_{id}",
                       on_click=select_bridge, args=(ip_address))
 
 
