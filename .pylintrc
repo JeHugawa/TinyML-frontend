@@ -1,4 +1,6 @@
 [MAIN]
+# Set path for local imports when there is no src folder
+init-hook="import sys; sys.path.append("./")"
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
