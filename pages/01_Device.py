@@ -184,7 +184,7 @@ try:
 
     col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
-    col = st.columns(11)  # , gap="small")
+    col = st.columns(11)
     col[0].write("Id")
     col[1].write("Connection")
     col[2].write("Installer")
