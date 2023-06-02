@@ -10,7 +10,7 @@ from config import BACKEND_URL
 def get_saved_datasets():
     """Return a list of all registered devices on backend"""
     
-    response = requests.get(f"{BACKEND_URL}/datasets/")
+    response = requests.get(f"{BACKEND_URL}/datasets/", timeout=5)
 
     if response.text == []:
         raise ValueError()

@@ -1,10 +1,12 @@
 import streamlit as st
 from services import dataset_service
 
+
 st.set_page_config(
     page_title="Data", 
+    page_icon="✅",
     layout="wide"
-    )
+)
 
 state = st.session_state
 
