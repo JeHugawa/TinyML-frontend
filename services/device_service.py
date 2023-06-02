@@ -1,10 +1,10 @@
+import os
+import json
 import usb.core
 import usb.util
 import requests
-import json
-import os
 
-from config import BACKEND_URL
+from config import BACKEND_URL, ACCEPTED_VENDORS
 
 
 def find_usb_devices():
@@ -31,8 +31,8 @@ def find_usb_devices():
             if (usb.util.get_string(device, device.iManufacturer)
                     in ACCEPTED_VENDORS):
                 devices.append(device)
-        except Exception as e:
-            print(str(e))
+        except Exception as error:  # pylint: disable=broad-exception-caught
+            print(str(error))
             continue
 
     return_devices = []
@@ -57,7 +57,7 @@ def send_add_request(data: dict):
     """
 
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
-    res = requests.post(f"{BACKEND_URL}/add_device/", json=data)
+    res = requests.post(f"{BACKEND_URL}/add_device/", json=data, timeout=5)
     if res.status_code == 201:
         return res.json()
     return None
@@ -66,12 +66,11 @@ def send_add_request(data: dict):
 def get_registered_devices():
     """Return a list of all registered devices on backend"""
 
-    response = requests.get(f"{BACKEND_URL}/devices/")
+    response = requests.get(f"{BACKEND_URL}/devices/", timeout=5)
 
     if response.text == []:
         raise ValueError()
-    else:
-        response = json.loads(response.text)
+    response = json.loads(response.text)
 
     return response
 
@@ -84,7 +83,7 @@ def remove_device(*args):
     """
 
     device_id = ''.join(args)
-    response = requests.delete(f"{BACKEND_URL}/devices/{device_id}")
+    response = requests.delete(f"{BACKEND_URL}/devices/{device_id}", timeout=5)
 
     if response.status_code == 400:
         raise ValueError()

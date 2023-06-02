@@ -161,7 +161,7 @@ try:
     col[0].write("Id")
     col[1].write("Address")
     col[2].write("Name")
-    for row in registered_bridges.sort_values("id").itertuples():
+    for row in registered_bridges.sort_values("id").itertuples():  # pylint: disable=no-member
         _, name, bridge_id, ip_address = row
         col = st.columns(10, gap="small")
 
