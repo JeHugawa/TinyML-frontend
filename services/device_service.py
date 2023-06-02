@@ -66,24 +66,24 @@ def send_add_request(data: dict):
 
 def get_registered_devices():
     """Return a list of all registered devices on backend"""
-    
+
     response = requests.get(f"{BACKEND_URL}/registered_devices/")
 
     if response.text == []:
         raise ValueError()
     else:
-        df = pd.read_json(response.text)
+        response = json.loads(response.text)
 
-    return df
+    return response
 
 
 def remove_device(*args):
     """Removes device from backend based on device_id.
-    
+
     Args:
         *args: device_id as a tuple
     """
-    
+
     device_id = ''.join(args)
     response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
 

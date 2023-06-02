@@ -1,4 +1,10 @@
 [MAIN]
+# Set path for local imports when there is no src folder
+init-hook="import sys; sys.path.append("./")"
+
+# Disable certain errors, such as missing-module-docstring
+disable=
+	C0114,
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
@@ -215,7 +221,7 @@ method-naming-style=snake_case
 #method-rgx=
 
 # Naming style matching correct module names.
-module-naming-style=snake_case
+module-naming-style=any
 
 # Regular expression matching correct module names. Overrides module-naming-
 # style. If left empty, module names will be checked with the set naming style.
