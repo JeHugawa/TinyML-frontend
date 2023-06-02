@@ -14,7 +14,6 @@ def add_bridge(address: str, name: str = None):
     }
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
     response = requests.post(f"{BACKEND_URL}/bridges/", json=data)
-    print(response)
     if response.status_code == 201:
         return None
     return json.loads(response.text)

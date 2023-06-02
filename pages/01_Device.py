@@ -127,13 +127,13 @@ def list_connected_devices():
             st.write(f":red[Error with field] :orange[{field}]:")
             st.write(f":orange[{error}]")
     devices = device_service.find_usb_devices()
-    col1, col2, col3, col4 = st.columns(4)
+    device_col1, device_col2, device_col3, device_col4 = st.columns(4)
 
     for i, device in enumerate(devices, start=1):
-        col1.write(device["manufacturer"])
-        col2.write(device["product"])
-        col3.write(device["serial"])
-        col4.button("Register this device", key=i, on_click=handle_add, args=(
+        device_col1.write(device["manufacturer"])
+        device_col2.write(device["product"])
+        device_col3.write(device["serial"])
+        device_col4.button("Register this device", key=i, on_click=handle_add, args=(
             device["manufacturer"], device["product"], device["serial"]
         ))
 
@@ -151,13 +151,13 @@ main()
 
 st.header("All registered bridges")
 
-registered_bridges = bridge_service.get_registered_bridges()
 
 col1, col2 = st.columns(2)
 
 col = st.columns(10, gap="small")
 
-if not registered_bridges.empty:
+try:
+    registered_bridges = bridge_service.get_registered_bridges()
     col[0].write("Id")
     col[1].write("Address")
     col[2].write("Name")
@@ -174,7 +174,8 @@ if not registered_bridges.empty:
                       on_click=remove_bridge, args=str(bridge_id))
         col[4].button("Select", key=f"s_{ip_address}_{bridge_id}",
                       on_click=select_bridge, args=ip_address)
-
+except ValueError:
+    st.warning("No registered bridges")
 
 st.header("All registered devices")
 
