@@ -58,7 +58,7 @@ def send_add_request(data: dict):
     """
 
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
-    res = requests.post(f"{BACKEND_URL}/add_device/", json=data)
+    res = requests.post(f"{BACKEND_URL}/devices/", json=data)
     if res.status_code == 201:
         return res.json()
     return None
@@ -75,6 +75,11 @@ def get_registered_devices():
         df = pd.read_json(response.text)
 
     return df
+
+
+def get_no_of_devices():
+    df = get_registered_devices()
+    return df.shape[0]
 
 
 def remove_device(*args):

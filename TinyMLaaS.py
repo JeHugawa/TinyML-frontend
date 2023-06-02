@@ -6,7 +6,7 @@ import streamlit as st
 import pandas as pd
 
 from config import BACKEND_URL
-from services import data_service, device_service
+from services import dataset_service, device_service
 
 # Page setup
 st.set_page_config(
@@ -32,10 +32,9 @@ st.map(device_locations[["latitude", "longitude"]], zoom=13)
 
 st.header("Statistical Data")
 
-datasets = data_service.get_dataset_names() 
+no_of_datasets = dataset_service.get_no_of_datasets() 
+no_of_devices = device_service.get_no_of_devices()
 
-devices = device_service.get_registered_devices()
-
-st.write(devices.shape[0], "Devices registered")
-st.write(len(datasets["dataset_names"]), " Datasets saved")
+st.write(no_of_devices, "Devices registered")
+st.write(no_of_datasets, " Datasets saved")
 
