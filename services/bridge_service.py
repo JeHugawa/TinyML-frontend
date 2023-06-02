@@ -28,6 +28,8 @@ def get_registered_bridges():
 
 
 def try_conntection(address: str):
+    if os.environ.get("ROBOT_TESTS") == "true":
+        return True
     if "http" not in address:
         address = "http://" + address
     try:

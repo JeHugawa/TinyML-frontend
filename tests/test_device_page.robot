@@ -42,7 +42,7 @@ Remove Last Device in the List Test
 
 Check That Register Device Button Opens Form
     Page Should Not Contain     Add a new device
-    Click Button    Register this device
+    Click Element    //*[contains(text(),"Register this device")]
     Page Should Contain    Add a new device
 
 Check Page Contains Register A Bridge
