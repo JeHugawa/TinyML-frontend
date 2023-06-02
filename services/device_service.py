@@ -67,7 +67,7 @@ def send_add_request(data: dict):
 def get_registered_devices():
     """Return a list of all registered devices on backend"""
     
-    response = requests.get(f"{BACKEND_URL}/registered_devices/")
+    response = requests.get(f"{BACKEND_URL}/devices/")
 
     if response.text == []:
         raise ValueError()
@@ -85,7 +85,7 @@ def remove_device(*args):
     """
     
     device_id = ''.join(args)
-    response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
+    response = requests.delete(f"{BACKEND_URL}/devices/{device_id}")
 
     if response.status_code == 400:
         raise ValueError()
