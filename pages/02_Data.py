@@ -5,9 +5,9 @@ from services import data_service
 
 st.set_page_config(
     page_title="Data", 
-    page_icon="✅", 
+    page_icon="✅",
     layout="wide"
-    )
+)
 
 def list_all_datasets():
     st.header("Existing datasets")
@@ -28,7 +28,6 @@ def add_image_to_dataset():
         uploaded_file = st.file_uploader("Choose a file")
         if uploaded_file is not None:
             st.warning(data_service.add_image_to_dataset(st.session_state["selected_dataset"],json.dumps(dict())))
-
 
 def main():
     st.header("Data")
