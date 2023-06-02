@@ -5,6 +5,7 @@ init-hook="import sys; sys.path.append("./")"
 # Disable certain errors, such as missing-module-docstring
 disable=
 	C0114,
+	C0116
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists

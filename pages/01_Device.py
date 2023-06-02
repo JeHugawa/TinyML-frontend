@@ -3,7 +3,6 @@ import streamlit as st
 from services import device_service, bridge_service
 
 
-
 # Page setup
 st.set_page_config(
     page_title="Devices",
@@ -16,7 +15,10 @@ state = st.session_state
 if "bridge" in state:
     st.success(f"Successfully selected bridge {state.bridge}")
 elif "bridge_fail" in state:
-    st.error("Error while trying to connect to bridge.\n Please make sure that the bridge is active.")
+    st.error(
+        "Error while trying to connect to bridge.\n"
+        "Please make sure that the bridge is active.")
+
 
 def select_device(*args):
     state.device_id = args[0]
@@ -26,16 +28,18 @@ def select_device(*args):
     state.compiler = args[4]
     state.model = args[5]
     state.description = args[6]
-    st.success(f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
+    st.success(
+        f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
+
 
 def remove_device(*args):
     try:
         device_service.remove_device(*args)
         st.success("Device removed successfully.")
-    except:
+    except ValueError:
         st.error("Could not remove device.")
 
-        
+
 def submit_add():
     added_device = device_service.send_add_request({
         "name": state.device_name,
@@ -46,10 +50,10 @@ def submit_add():
         "description": state.description,
         "serial": state.serial
     })
-    
-    state.device_id = (added_device["id"])
-    st.success(f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
-    
+
+    state.device_id = added_device["id"]
+    st.success(
+        f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
 
 
 def handle_add(manufacturer="", product="", serial=""):
@@ -93,6 +97,11 @@ def register_a_bridge():
         if register:
             added = bridge_service.add_bridge(ip_addr, name)
             if added is not None:
+                error = added["detail"][0]["msg"]
+                field = added["detail"][0]["loc"][1]
+                st.error((f":red[Error with field] :orange[{field}]: "
+                         f":orange[{error}]"))
+            else:
                 st.success("Bridging device registered successfully! 🔥")
 
 
@@ -146,14 +155,14 @@ registered_bridges = bridge_service.get_registered_bridges()
 
 col1, col2 = st.columns(2)
 
-col = st.columns(10, gap="small")      
+col = st.columns(10, gap="small")
 
 if not registered_bridges.empty:
     col[0].write("Id")
     col[1].write("Address")
     col[2].write("Name")
     for row in registered_bridges.sort_values("id").itertuples():
-        _, ip_address, name, id = row
+        _, name, id, ip_address = row
         col = st.columns(10, gap="small")
 
         col[0].write(id)
@@ -162,7 +171,7 @@ if not registered_bridges.empty:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
         col[3].button("Remove", key=f"r_{ip_address}_{id}",
-                      on_click=remove_bridge, args=(str(id)))
+                      on_click=remove_bridge, args=str(id))
         col[4].button("Select", key=f"s_{ip_address}_{id}",
                       on_click=select_bridge, args=(ip_address))
 
@@ -171,10 +180,10 @@ st.header("All registered devices")
 
 try:
     registered_devices = device_service.get_registered_devices()
-    
+
     col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
-    col = st.columns(11)#, gap="small")
+    col = st.columns(11)  # , gap="small")
     col[0].write("Id")
     col[1].write("Connection")
     col[2].write("Installer")
@@ -202,6 +211,6 @@ try:
         col[8].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
             registered_devices, id, name, connection, installer, compiler, model, description))
         col[9].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
-                id, name, connection, installer, compiler, model, description))
+            id, name, connection, installer, compiler, model, description))
 except:
     st.warning("No registered devices.")
