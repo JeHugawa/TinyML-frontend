@@ -2,7 +2,6 @@ import usb.core
 import usb.util
 import requests
 import json
-import pandas as pd
 import os
 
 from config import BACKEND_URL
@@ -60,14 +59,14 @@ def send_add_request(data: dict):
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
     res = requests.post(f"{BACKEND_URL}/add_device/", json=data)
     if res.status_code == 201:
-        return None
-    return json.loads(res.text)
+        return res.json()
+    return None
 
 
 def get_registered_devices():
     """Return a list of all registered devices on backend"""
 
-    response = requests.get(f"{BACKEND_URL}/registered_devices/")
+    response = requests.get(f"{BACKEND_URL}/devices/")
 
     if response.text == []:
         raise ValueError()
@@ -85,7 +84,7 @@ def remove_device(*args):
     """
 
     device_id = ''.join(args)
-    response = requests.delete(f"{BACKEND_URL}/remove_device/{device_id}")
+    response = requests.delete(f"{BACKEND_URL}/devices/{device_id}")
 
     if response.status_code == 400:
         raise ValueError()
