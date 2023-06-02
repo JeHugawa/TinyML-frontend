@@ -56,7 +56,7 @@ def submit_add():
         f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
 
 
-def handle_add(manufacturer="", product="", serial=""):
+def handle_add(manufacturer="", product="", serialnum=""):
     with st.form("new_device"):
         st.write("Add a new device")
         st.text_input("Device name", key="device_name", value=manufacturer)
@@ -65,11 +65,11 @@ def handle_add(manufacturer="", product="", serial=""):
         st.text_input("Compiler", key="compiler")
         st.text_input("Model", key="model", value=product)
         st.text_input("Description", key="description")
-        st.text_input("Serial number", key="serial", value=serial)
+        st.text_input("Serial number", key="serial", value=serialnum)
 
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        col1.form_submit_button(label="Add", on_click=submit_add)
-        col6.form_submit_button(label="Cancel")
+        add_col, _, _, _, _, cancel_col = st.columns(6)
+        add_col.form_submit_button(label="Add", on_click=submit_add)
+        cancel_col.form_submit_button(label="Cancel")
 
 
 def select_bridge(*address):
@@ -84,18 +84,18 @@ def remove_bridge(*args):
     try:
         bridge_service.remove_bridge(*args)
         st.success("Bridge removed successfully.")
-    except:
+    except ValueError:
         st.error("Could not remove bridge.")
 
 
 def register_a_bridge():
     with st.expander("Register a bridging device", expanded=False):
         ip_addr = st.text_input('IP address of the bridging server')
-        name = st.text_input('Name of server (Optional)')
+        bridge_name = st.text_input('Name of server (Optional)')
         register = st.button('Add')
 
         if register:
-            added = bridge_service.add_bridge(ip_addr, name)
+            added = bridge_service.add_bridge(ip_addr, bridge_name)
             if added is not None:
                 error = added["detail"][0]["msg"]
                 field = added["detail"][0]["loc"][1]
@@ -106,9 +106,9 @@ def register_a_bridge():
 
 
 def load_page_info():
-    col = st.columns(4)
-    col[0].title("Device")
-    with col[-1].expander("ℹ️ Help"):
+    columns = st.columns(4)
+    columns[0].title("Device")
+    with columns[-1].expander("ℹ️ Help"):
         st.markdown("On this page you can connect to a bridging device.")
         st.markdown(
             "It will eventually also show an overview of connected devices.")
@@ -162,18 +162,18 @@ if not registered_bridges.empty:
     col[1].write("Address")
     col[2].write("Name")
     for row in registered_bridges.sort_values("id").itertuples():
-        _, name, id, ip_address = row
+        _, name, bridge_id, ip_address = row
         col = st.columns(10, gap="small")
 
-        col[0].write(id)
+        col[0].write(bridge_id)
         col[1].write(ip_address)
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Remove", key=f"r_{ip_address}_{id}",
-                      on_click=remove_bridge, args=str(id))
-        col[4].button("Select", key=f"s_{ip_address}_{id}",
-                      on_click=select_bridge, args=(ip_address))
+        col[3].button("Remove", key=f"r_{ip_address}_{bridge_id}",
+                      on_click=remove_bridge, args=str(bridge_id))
+        col[4].button("Select", key=f"s_{ip_address}_{bridge_id}",
+                      on_click=select_bridge, args=ip_address)
 
 
 st.header("All registered devices")
@@ -191,10 +191,12 @@ try:
     col[4].write("Model")
     col[5].write("Description")
     col[6].write("Serial number")
-    for row in registered_devices.sort_values("id").itertuples():
-        index, name, connection, installer, compiler, model, description, serial, id = row
+    # .sort_values("id").itertuples(): Says registered devices is a list and
+    # cannot sort it by values
+    for row in registered_devices:
+        index, name, connection, installer, compiler, model, description, serial, device_id = row
         col = st.columns(11)
-        col[0].write(id)
+        col[0].write(device_id)
         # make selected device name bold
         # if "device_id" in state and device_id == id:
         #     col[1].write("**"+name+"**")
@@ -206,11 +208,17 @@ try:
         col[4].write(model)
         col[5].write(description)
         col[6].write(serial)
-        col[7].button("Remove", key=f"r_{id}_{name}", on_click=remove_device, args=(
-            str(id)))  # args in st.buttons is always a tuple of strings
-        col[8].button("Modify", key=f"m_{id}_{name}", on_click=None, args=(
-            registered_devices, id, name, connection, installer, compiler, model, description))
-        col[9].button("Select", key=f"s_{id}_{name}", on_click=select_device, args=(
-            id, name, connection, installer, compiler, model, description))
-except:
+        col[7].button("Remove", key=f"r_{device_id}_{name}",
+                      on_click=remove_device, args=(
+                          str(id)))  # args in st.buttons is always a tuple of strings
+        col[8].button("Modify", key=f"m_{device_id}_{name}", on_click=None,
+                      args=(
+                          registered_devices, device_id, name,
+                          connection, installer, compiler, model, description))
+        col[9].button("Select", key=f"s_{device_id}_{name}",
+                      on_click=select_device,
+                      args=(
+                          device_id, name, connection,
+                          installer, compiler, model, description))
+except ValueError:
     st.warning("No registered devices.")
