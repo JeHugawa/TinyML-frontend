@@ -1,4 +1,6 @@
 # TinyML-frontend
+![GitHub Actions](https://github.com/TinyMLaas/TinyML-frontend/actions/workflows/frontend_tests.yml/badge.svg)
+
 frontend for the [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main).
 
 ## USB-detection
