@@ -1,3 +1,4 @@
+
 *** Settings ***
 Resource          resource.robot
 Suite Setup       Open Browser With DeviceUrl
@@ -41,7 +42,7 @@ Remove Last Device in the List Test
 
 Check That Register Device Button Opens Form
     Page Should Not Contain     Add a new device
-    Click Button    Register this device
+    Click Element    //*[contains(text(),"Register this device")]
     Page Should Contain    Add a new device
 
 Check Page Contains Register A Bridge
@@ -55,4 +56,3 @@ Check Form To Register Bridge Opens Up
 Selecting A Bridge Is Successful
     Click Element    //*[contains(text(),"Select bridge")]
     Page Should Contain    Successfully selected bridge
-

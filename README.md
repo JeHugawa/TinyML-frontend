@@ -1,4 +1,6 @@
 # TinyML-frontend
+![GitHub Actions](https://github.com/TinyMLaas/TinyML-frontend/actions/workflows/frontend_pylint.yml/badge.svg)
+
 frontend for the [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main).
 
 ## USB-detection
