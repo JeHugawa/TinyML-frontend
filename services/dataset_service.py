@@ -1,8 +1,6 @@
 import pandas as pd
 import requests
 
-#import pandas as pd
-
 from config import BACKEND_URL
 
 
