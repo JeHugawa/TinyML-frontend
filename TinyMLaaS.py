@@ -1,7 +1,4 @@
 import streamlit as st
-import requests
-import os
-import json
 import pandas as pd
 
 from services import dataset_service, device_service
@@ -30,9 +27,8 @@ st.map(device_locations[["latitude", "longitude"]], zoom=13)
 
 st.header("Statistical Data")
 
-no_of_datasets = dataset_service.get_no_of_datasets() 
+no_of_datasets = dataset_service.get_no_of_datasets()
 no_of_devices = device_service.get_no_of_devices()
 
 st.write(no_of_devices, "Devices registered")
 st.write(no_of_datasets, " Datasets saved")
-

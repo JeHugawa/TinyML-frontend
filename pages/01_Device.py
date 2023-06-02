@@ -21,7 +21,7 @@ elif "bridge_fail" in state:
 
 
 def select_device(*args):
-    state.device_id = args[0]
+    state.id = args[0]
     state.device_name = args[1]
     state.connection = args[2]
     state.installer = args[3]
@@ -51,7 +51,7 @@ def submit_add():
         "serial": state.serial
     })
 
-    state.device_id = added_device["id"]
+    state.id = added_device["id"]
     st.success(
         f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
 
@@ -162,17 +162,17 @@ try:
     col[1].write("Address")
     col[2].write("Name")
     for row in registered_bridges.sort_values("id").itertuples():  # pylint: disable=no-member
-        _, name, bridge_id, ip_address = row
+        _, ip_address, name, id = row
         col = st.columns(10, gap="small")
 
-        col[0].write(bridge_id)
+        col[0].write(id)
         col[1].write(ip_address)
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Remove", key=f"r_{ip_address}_{bridge_id}",
-                      on_click=remove_bridge, args=str(bridge_id))
-        col[4].button("Select", key=f"s_{ip_address}_{bridge_id}",
+        col[3].button("Remove", key=f"r_{ip_address}_{id}",
+                      on_click=remove_bridge, args=str(id))
+        col[4].button("Select", key=f"s_{ip_address}_{id}",
                       on_click=select_bridge, args=ip_address)
 except ValueError:
     st.warning("No registered bridges")
@@ -192,14 +192,12 @@ try:
     col[4].write("Model")
     col[5].write("Description")
     col[6].write("Serial number")
-    # .sort_values("id").itertuples(): Says registered devices is a list and
-    # cannot sort it by values
-    for row in registered_devices:
-        index, name, connection, installer, compiler, model, description, serial, device_id = row
+    for row in registered_devices.sort_values("id").itertuples():
+        index, name, connection, installer, compiler, model, description, serial, id = row
         col = st.columns(11)
-        col[0].write(device_id)
+        col[0].write(id)
         # make selected device name bold
-        # if "device_id" in state and device_id == id:
+        # if "id" in state and id == id:
         #     col[1].write("**"+name+"**")
         # else:
         # col[1].write(name)
@@ -209,17 +207,17 @@ try:
         col[4].write(model)
         col[5].write(description)
         col[6].write(serial)
-        col[7].button("Remove", key=f"r_{device_id}_{name}",
+        col[7].button("Remove", key=f"r_{id}_{name}",
                       on_click=remove_device, args=(
                           str(id)))  # args in st.buttons is always a tuple of strings
-        col[8].button("Modify", key=f"m_{device_id}_{name}", on_click=None,
+        col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
                       args=(
-                          registered_devices, device_id, name,
+                          registered_devices, id, name,
                           connection, installer, compiler, model, description))
-        col[9].button("Select", key=f"s_{device_id}_{name}",
+        col[9].button("Select", key=f"s_{id}_{name}",
                       on_click=select_device,
                       args=(
-                          device_id, name, connection,
+                          id, name, connection,
                           installer, compiler, model, description))
 except ValueError:
     st.warning("No registered devices.")
