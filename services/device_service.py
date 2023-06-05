@@ -1,8 +1,8 @@
 import os
-import json
 import usb.core
 import usb.util
 import requests
+import pandas as pd
 
 from config import BACKEND_URL, ACCEPTED_VENDORS
 
@@ -57,7 +57,7 @@ def send_add_request(data: dict):
     """
 
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
-    res = requests.post(f"{BACKEND_URL}/add_device/", json=data, timeout=5)
+    res = requests.post(f"{BACKEND_URL}/devices/", json=data, timeout=5)
     if res.status_code == 201:
         return res.json()
     return None
@@ -70,9 +70,15 @@ def get_registered_devices():
 
     if response.text == []:
         raise ValueError()
-    response = json.loads(response.text)
+    devices = pd.read_json(response.text)
 
-    return response
+    return devices
+
+
+def get_no_of_devices():
+    devices = pd.DataFrame(get_registered_devices())
+
+    return devices.shape[0]
 
 
 def remove_device(*args):
