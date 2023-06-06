@@ -26,14 +26,6 @@ def training_page():
         st.error("No dataset was selected. Please select one on the Data page.")
         return
 
-    # model_path = st.session_state.selected_model["Model Path"]
-    # train = (st.session_state.selected_dataset, model_path)
-    # st.write(
-    #    ":red[Training can say successful,
-    # but prediction has keyerror 0 and it
-    # fails NOTE! DO NOT SELECT CAR DETECTION AND FACE RECOGNITION!]")
-    # st.subheader('Train a Keras model')
-
     st.write(
         ":red[Loss function can only choose Sparce Categorical crossentropy, other one fails]")
     st.subheader("Model Training Settings")
@@ -56,7 +48,7 @@ def training_page():
                 "img_width": img_width,
                 "img_height": img_height,
                 "batch_size": batch_size
-            },
+            }
             model = training_service.train_model(
                 state.dataset_id, model_name, parameters, loss_function)
         st.success("Model trained successfully!")
