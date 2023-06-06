@@ -76,6 +76,9 @@ def get_registered_devices():
 
 
 def get_no_of_devices():
+    """Calculates number of devices in device list.
+    """
+    
     devices = pd.DataFrame(get_registered_devices())
 
     return devices.shape[0]
@@ -88,7 +91,7 @@ def remove_device(*args):
         *args: device_id as a tuple
     """
 
-    device_id = ''.join(args)
+    device_id = "".join(args)
     response = requests.delete(f"{BACKEND_URL}/devices/{device_id}", timeout=5)
 
     if response.status_code == 400:
