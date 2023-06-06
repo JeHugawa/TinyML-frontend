@@ -40,28 +40,27 @@ def training_page():
     img_width = st.number_input("Enter image width", min_value=int(0))
     img_height = st.number_input(
     "Enter image height", min_value=int(0))
-    loss_function = st.radio("Choose a loss function", ("Some other loss function", "Sparse Categorical crossentropy"))
+    loss_function = st.radio("Choose a loss function", ("Categorical crossentropy", "Sparse Categorical crossentropy"))
     
 #drawing stuff
-    if loss_function:
-        if st.button("Train"):
-            with st.spinner("Training..."):
-                plot = st.empty()
-                test = st.empty()
-                model = training_service.train_model(
-                    state.dataset_id, model_name, epochs, img_width, img_height, batch_size, loss_function)
-            st.success("Model trained successfully!")
+    if st.button("Train"):
+        with st.spinner("Training..."):
+            plot = st.empty()
+            test = st.empty()
+            model = training_service.train_model(
+                state.dataset_id, model_name, epochs, img_width, img_height, batch_size, loss_function)
+        st.success("Model trained successfully!")
 
-            data = train.plot_statistics(
-                history, epochs_range)
-            tests, label = train.prediction(
-                model, train_ds.class_names)
-            if 'model' not in st.session_state:
-                st.session_state.model = model
-            plot.image(data)
-            test.image(tests, caption=label)
-            model.save(f"{model_path}/keras_model")
-            st.success("Model saved!")
+        data = train.plot_statistics(
+            history, epochs_range)
+        tests, label = train.prediction(
+            model, train_ds.class_names)
+        if 'model' not in st.session_state:
+            st.session_state.model = model
+        plot.image(data)
+        test.image(tests, caption=label)
+        model.save(f"{model_path}/keras_model")
+        st.success("Model saved!")
 
 
 page_info('Training')
