@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 from services import device_service, bridge_service
 
@@ -157,7 +158,8 @@ col1, col2 = st.columns(2)
 col = st.columns(10, gap="small")
 
 try:
-    registered_bridges = bridge_service.get_registered_bridges()
+    registered_bridges = pd.core.frame.DataFrame(
+        bridge_service.get_registered_bridges())
     col[0].write("Id")
     col[1].write("Address")
     col[2].write("Name")
@@ -180,7 +182,8 @@ except ValueError:
 st.header("All registered devices")
 
 try:
-    registered_devices = device_service.get_registered_devices()
+    registered_devices = pd.core.frame.DataFrame(
+        device_service.get_registered_devices())
 
     col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 

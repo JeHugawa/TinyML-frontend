@@ -10,12 +10,14 @@ st.set_page_config(
 
 state = st.session_state
 
+
 def select_dataset(*args):
     state.dataset_id = args[0]
     state.dataset_name = args[1]
     state.dataset_description = args[2]
     state.dataset_size = args[3]
     st.success(f"You have selected **{state.dataset_name}** dataset.")
+
 
 st.header("Existing datasets")
 

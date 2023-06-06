@@ -29,7 +29,9 @@ def training_page():
     # model_path = st.session_state.selected_model["Model Path"]
     # train = (st.session_state.selected_dataset, model_path)
     # st.write(
-    #    ":red[Training can say successful, but prediction has keyerror 0 and it fails NOTE! DO NOT SELECT CAR DETECTION AND FACE RECOGNITION!]")
+    #    ":red[Training can say successful,
+    # but prediction has keyerror 0 and it
+    # fails NOTE! DO NOT SELECT CAR DETECTION AND FACE RECOGNITION!]")
     # st.subheader('Train a Keras model')
 
     st.write(
@@ -49,20 +51,18 @@ def training_page():
         with st.spinner("Training..."):
             plot = st.empty()
             test = st.empty()
+            parameters = {
+                "epochs": epochs,
+                "img_width": img_width,
+                "img_height": img_height,
+                "batch_size": batch_size
+            },
             model = training_service.train_model(
-                state.dataset_id, model_name, epochs, img_width, img_height, batch_size, loss_function)
+                state.dataset_id, model_name, parameters, loss_function)
         st.success("Model trained successfully!")
 
-#        data = train.plot_statistics(
- #           history, epochs_range)
- #       tests, label = train.prediction(
- #           model, train_ds.class_names)
- #       if 'model' not in st.session_state:
- #           st.session_state.model = model
- #       plot.image(data)
- #       test.image(tests, caption=label)
- #       model.save(f"{model_path}/keras_model")
-  #      st.success("Model saved!")
+        plot.image(model[1])
+        test.image(model[0], caption=model[2]["prediction"])
 
 
 page_info('Training')
