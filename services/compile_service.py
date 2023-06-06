@@ -8,10 +8,10 @@ def compile_model(data: dict):
     """Sends request to backend for compilation. The request uses the model id.
     """
     model_id = data["model_id"]
-    
+
     response = requests.post(f"{BACKEND_URL}/compiled_models/models/{model_id}", json=data, timeout=5)
-    
-    return(data)
+
+    return(f"{data} gets response {response.text}")
 
 
 def get_compiled_models():
