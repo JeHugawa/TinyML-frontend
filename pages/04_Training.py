@@ -51,16 +51,16 @@ def training_page():
                 state.dataset_id, model_name, epochs, img_width, img_height, batch_size, loss_function)
         st.success("Model trained successfully!")
 
-        data = train.plot_statistics(
-            history, epochs_range)
-        tests, label = train.prediction(
-            model, train_ds.class_names)
-        if 'model' not in st.session_state:
-            st.session_state.model = model
-        plot.image(data)
-        test.image(tests, caption=label)
-        model.save(f"{model_path}/keras_model")
-        st.success("Model saved!")
+    #     data = training_service.train.plot_statistics(
+    #         history, epochs_range)
+    #     tests, label = training_service.train.prediction(
+    #         model, training_service.train_ds.class_names)
+    #     if 'model' not in st.session_state:
+    #         st.session_state.model = model
+    #     plot.image(data)
+    #     test.image(tests, caption=label)
+    #    #model.save(f"{model_path}/keras_model")
+    #     st.success("Model saved!")
 
 
 page_info('Training')

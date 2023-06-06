@@ -16,8 +16,8 @@ def train_model(dataset_id: int,model_name: str, epochs: int,
         "img_height": img_height,
         "batch_size": batch_size
     }
-    response = requests.post(f"{BACKEND_URL}/model/dataset/{dataset_id}?lossfunc={lossfunc}",
-                             json=data, timeout=5)
+    response = requests.post(f"{BACKEND_URL}/models/datasets/{dataset_id}?lossfunc={lossfunc}",
+                             json=data, timeout=(5, None))
     if response.status_code == 201:
         return None
     return json.loads(response.text)
