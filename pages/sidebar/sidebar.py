@@ -11,3 +11,7 @@ def load_side_bar():
             f"Selected device: :green[{state.device['device_name']}]")
         st.sidebar.write(
             f"Description: :orange[{state.device['description']}]")
+    if "dataset" in state:
+        st.sidebar.write(
+            f"Selected dataset: :green[{state.dataset['name']}]"
+        )
