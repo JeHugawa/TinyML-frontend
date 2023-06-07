@@ -15,3 +15,6 @@ def load_side_bar():
         st.sidebar.write(
             f"Selected dataset: :green[{state.dataset['name']}]"
         )
+    if "model" in state:
+        st.sidebar.write(
+            f"Selected model: :green[{state.model['description']}]")

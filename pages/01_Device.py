@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 from pages.sidebar import sidebar
 from services import device_service, bridge_service
@@ -239,11 +240,8 @@ def list_registered_devices():
         st.warning("No registered devices.")
 
 
-# @sidebar.load_side_bar
 def main():
     load_page_info()
-
-    # load_side_bar()
 
     register_a_bridge()
 
