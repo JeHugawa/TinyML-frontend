@@ -12,24 +12,23 @@ st.set_page_config(
 state = st.session_state
 
 
-if "bridge" in state:
-    st.success(f"Successfully selected bridge {state.bridge}")
-elif "bridge_fail" in state:
-    st.error(
-        "Error while trying to connect to bridge.\n"
-        "Please make sure that the bridge is active.")
-
-
 def select_device(*args):
-    state.id = args[0]
-    state.device_name = args[1]
-    state.connection = args[2]
-    state.installer = args[3]
-    state.compiler = args[4]
-    state.model = args[5]
-    state.description = args[6]
+    state.device = {
+        "id": args[0],
+        "device_name": args[1],
+        "connection": args[2],
+        "installer": args[3],
+        "compiler": args[4],
+        "model": args[5],
+        "description": args[6],
+        "serial": args[7]
+    }
     st.success(
-        f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
+        (f"You have selected **{state.device['device_name']}"
+         f"/ {state.device['installer']} / {state.device['connection']}**."
+         ))
+    # st.success(
+    #     f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
 
 
 def remove_device(*args):
@@ -41,7 +40,7 @@ def remove_device(*args):
 
 
 def submit_add():
-    added_device = device_service.send_add_request({
+    device = {
         "name": state.device_name,
         "connection": state.connection,
         "installer": state.installer,
@@ -49,11 +48,24 @@ def submit_add():
         "model": state.model,
         "description": state.description,
         "serial": state.serial
-    })
+    }
 
-    state.id = added_device["id"]
+    del state["device_name"]
+    for key in device.keys():
+        if key in state.keys():
+            del state[key]
+
+    added_device = device_service.send_add_request(device)
+
+    if added_device is None:
+        st.error("Error while adding device")
+        return
+
+    state.device = added_device
     st.success(
-        f"You have added **{state.device_name} / {state.installer} / {state.connection}**.")
+        (f"You have added **{state.device['device_name']}"
+         f"/ {state.device['installer']} / {state.device['connection']}**."
+         ))
 
 
 def handle_add(manufacturer="", product="", serialnum=""):
@@ -74,10 +86,14 @@ def handle_add(manufacturer="", product="", serialnum=""):
 
 def select_bridge(*address):
     address = "".join(address)
+
     if bridge_service.try_conntection(address):
         state.bridge = address
-    else:
-        state.bridge_fail = "true"
+        st.success(f"Successfully selected bridge {state.bridge}")
+        return
+    st.error(
+        "Error while trying to connect to bridge.\n"
+        "Please make sure that the bridge is active.")
 
 
 def remove_bridge(*args):
@@ -116,6 +132,15 @@ def load_page_info():
         # st.markdown("[See the doc page for more info](/Documentation)")
 
 
+def load_side_bar():
+    if "bridge" in state:
+        st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
+    if "device" in state:
+        st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
+        st.sidebar.write(
+            f"Description: :orange[{state.device['description']}]")
+
+
 def list_connected_devices():
     st.header("Connected devices")
     st.button("Refresh", key="refresh")
@@ -138,86 +163,94 @@ def list_connected_devices():
         ))
 
 
+def list_registered_bridges():
+    st.header("All registered bridges")
+
+    col1, col2 = st.columns(2)
+
+    col = st.columns(10, gap="small")
+
+    try:
+        registered_bridges = bridge_service.get_registered_bridges()
+        col[0].write("Id")
+        col[1].write("Address")
+        col[2].write("Name")
+        for row in registered_bridges.sort_values("id").itertuples():
+            _, ip_address, name, id = row
+            col = st.columns(10, gap="small")
+
+            col[0].write(id)
+            col[1].write(ip_address)
+            # if "selected_device" in state and state.selected_device["id"] == id:
+            #    col[1].write("**"+name+"**")
+            col[2].write(name)
+            col[3].button("Remove", key=f"r_{ip_address}_{id}",
+                          on_click=remove_bridge, args=str(id))
+            col[4].button("Select", key=f"s_{ip_address}_{id}",
+                          on_click=select_bridge, args=ip_address)
+    except ValueError:
+        st.warning("No registered bridges")
+
+
+def list_registered_devices():
+    st.header("All registered devices")
+
+    try:
+        registered_devices = device_service.get_registered_devices()
+
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
+
+        col = st.columns(11)
+        col[0].write("Id")
+        col[1].write("Connection")
+        col[2].write("Installer")
+        col[3].write("Compiler")
+        col[4].write("Model")
+        col[5].write("Description")
+        col[6].write("Serial number")
+        for row in registered_devices.sort_values("id").itertuples():
+            index, name, connection, installer, compiler, model, description, serial, id = row
+            col = st.columns(11)
+            col[0].write(id)
+            # make selected device name bold
+            # if "id" in state and id == id:
+            #     col[1].write("**"+name+"**")
+            # else:
+            # col[1].write(name)
+            col[1].write(connection)
+            col[2].write(installer)
+            col[3].write(compiler)
+            col[4].write(model)
+            col[5].write(description)
+            col[6].write(serial)
+            col[7].button("Remove", key=f"r_{id}_{name}",
+                          on_click=remove_device, args=(
+                              str(id)))  # args in st.buttons is always a tuple of strings
+            col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
+                          args=(
+                              registered_devices, id, name,
+                              connection, installer, compiler, model, description))
+            col[9].button("Select", key=f"s_{id}_{name}",
+                          on_click=select_device,
+                          args=(
+                              id, name, connection,
+                              installer, compiler, model, description, serial))
+    except ValueError:
+        st.warning("No registered devices.")
+
+
 def main():
     load_page_info()
+
+    load_side_bar()
 
     register_a_bridge()
 
     list_connected_devices()
 
+    list_registered_bridges()
+
+    list_registered_devices()
+
 
 main()
-
-
-st.header("All registered bridges")
-
-
-col1, col2 = st.columns(2)
-
-col = st.columns(10, gap="small")
-
-try:
-    registered_bridges = bridge_service.get_registered_bridges()
-    col[0].write("Id")
-    col[1].write("Address")
-    col[2].write("Name")
-    for row in registered_bridges.sort_values("id").itertuples():
-        _, ip_address, name, id = row
-        col = st.columns(10, gap="small")
-
-        col[0].write(id)
-        col[1].write(ip_address)
-        # if "selected_device" in state and state.selected_device["id"] == id:
-        #    col[1].write("**"+name+"**")
-        col[2].write(name)
-        col[3].button("Remove", key=f"r_{ip_address}_{id}",
-                      on_click=remove_bridge, args=str(id))
-        col[4].button("Select", key=f"s_{ip_address}_{id}",
-                      on_click=select_bridge, args=ip_address)
-except ValueError:
-    st.warning("No registered bridges")
-
-st.header("All registered devices")
-
-try:
-    registered_devices = device_service.get_registered_devices()
-
-    col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
-
-    col = st.columns(11)
-    col[0].write("Id")
-    col[1].write("Connection")
-    col[2].write("Installer")
-    col[3].write("Compiler")
-    col[4].write("Model")
-    col[5].write("Description")
-    col[6].write("Serial number")
-    for row in registered_devices.sort_values("id").itertuples():
-        index, name, connection, installer, compiler, model, description, serial, id = row
-        col = st.columns(11)
-        col[0].write(id)
-        # make selected device name bold
-        # if "id" in state and id == id:
-        #     col[1].write("**"+name+"**")
-        # else:
-        # col[1].write(name)
-        col[1].write(connection)
-        col[2].write(installer)
-        col[3].write(compiler)
-        col[4].write(model)
-        col[5].write(description)
-        col[6].write(serial)
-        col[7].button("Remove", key=f"r_{id}_{name}",
-                      on_click=remove_device, args=(
-                          str(id)))  # args in st.buttons is always a tuple of strings
-        col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
-                      args=(
-                          registered_devices, id, name,
-                          connection, installer, compiler, model, description))
-        col[9].button("Select", key=f"s_{id}_{name}",
-                      on_click=select_device,
-                      args=(
-                          id, name, connection,
-                          installer, compiler, model, description))
-except ValueError:
-    st.warning("No registered devices.")
