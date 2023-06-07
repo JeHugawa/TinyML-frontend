@@ -51,6 +51,9 @@ def training_page():
             }
             model = training_service.train_model(
                 state.dataset_id, model_name, parameters, loss_function)
+        if type(model) != list:
+            st.error(
+                f"Error while training model {model['detail'][0]['loc'][1]}")
         st.success("Model trained successfully!")
 
         plot.image(model[1])
