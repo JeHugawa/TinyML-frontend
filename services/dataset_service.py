@@ -24,3 +24,22 @@ def get_no_of_datasets():
 
 def format_datasets(dataset):
     return dataset["name"]
+
+
+def add_new_dataset(dataset_name: str, dataset_desc:str ,files):
+    """Adds a new dataset on backend
+
+    Args:
+        dataset_name: Name for the new dataset
+        dataset_desc: description for the new dataset
+        files: Images to initially add to the path
+    """
+    data = {
+            "dataset_name": dataset_name,
+            "dataset_desc": dataset_desc,
+            "images": files
+            }
+    res = requests.post(f"{BACKEND_URL}/datasets/", json=data)
+    if res.status_code == 201:
+        return True
+    return res.status_code

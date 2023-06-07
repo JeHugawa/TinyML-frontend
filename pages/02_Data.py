@@ -17,6 +17,7 @@ def select_dataset(*args):
     state.dataset_size = args[3]
     st.success(f"You have selected **{state.dataset_name}** dataset.")
 
+
 st.header("Existing datasets")
 
 try:
@@ -41,3 +42,19 @@ try:
 
 except:
     st.warning("No datasets available.")
+
+st.divider()
+st.header("Add new dataset")
+
+with st.form("Add a new Dataset"):
+    state.add_button = False
+    new_dataset_name = st.text_input("Dataset name")
+    new_dataset_desc = st.text_input("Description for dataset (optional)")
+    uploaded_files = st.file_uploader("Choose image files", accept_multiple_files=True)
+    submitted = st.form_submit_button("Add")
+    if submitted:
+        response = dataset_service.add_new_dataset(new_dataset_name, new_dataset_desc,"testvalue") 
+        if response == 201:
+            st.success("New dataset added")
+        else:
+            st.error(response)
