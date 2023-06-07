@@ -3,11 +3,21 @@ import pandas as pd
 
 from services import dataset_service, device_service
 
+state = st.session_state
+
 # Page setup
 st.set_page_config(
     page_title="TinyMLaaS",
     layout="wide"
 )
+
+if "bridge" in state:
+    st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
+if "device" in state:
+    st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
+    st.sidebar.write(
+        f"Description: :orange[{state.device['description']}]")
+
 st.title("Welcome to TinyMLaaS")
 
 st.header("Device Location Map")

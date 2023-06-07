@@ -10,6 +10,7 @@ st.set_page_config(
 
 state = st.session_state
 
+
 def select_dataset(*args):
     state.dataset_id = args[0]
     state.dataset_name = args[1]
@@ -17,7 +18,18 @@ def select_dataset(*args):
     state.dataset_size = args[3]
     st.success(f"You have selected **{state.dataset_name}** dataset.")
 
+
 st.header("Existing datasets")
+
+
+def load_side_bar():
+    if "bridge" in state:
+        st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
+    if "device" in state:
+        st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
+        st.sidebar.write(
+            f"Description: :orange[{state.device['description']}]")
+
 
 try:
     existing_datasets = dataset_service.get_saved_datasets()
@@ -41,3 +53,6 @@ try:
 
 except:
     st.warning("No datasets available.")
+
+
+load_side_bar()
