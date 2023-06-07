@@ -1,4 +1,6 @@
 import streamlit as st
+
+from pages.sidebar import sidebar
 from services import dataset_service
 
 
@@ -7,6 +9,8 @@ st.set_page_config(
     page_icon="✅",
     layout="wide"
 )
+
+sidebar.load_side_bar()
 
 state = st.session_state
 
@@ -53,6 +57,3 @@ try:
 
 except:
     st.warning("No datasets available.")
-
-
-load_side_bar()

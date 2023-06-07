@@ -1,5 +1,6 @@
 import streamlit as st
 
+from pages.sidebar import sidebar
 from services import device_service, bridge_service
 
 
@@ -132,13 +133,13 @@ def load_page_info():
         # st.markdown("[See the doc page for more info](/Documentation)")
 
 
-def load_side_bar():
-    if "bridge" in state:
-        st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
-    if "device" in state:
-        st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
-        st.sidebar.write(
-            f"Description: :orange[{state.device['description']}]")
+# def load_side_bar():
+#     if "bridge" in state:
+#         st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
+#     if "device" in state:
+#         st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
+#         st.sidebar.write(
+#             f"Description: :orange[{state.device['description']}]")
 
 
 def list_connected_devices():
@@ -181,12 +182,13 @@ def list_registered_bridges():
 
             col[0].write(id)
             col[1].write(ip_address)
-            # if "selected_device" in state and state.selected_device["id"] == id:
-            #    col[1].write("**"+name+"**")
-            col[2].write(name)
-            col[3].button("Remove", key=f"r_{ip_address}_{id}",
+            if "bridge" in state and state.bridge == ip_address:
+                col[2].write(f"**:green[{name}]**")
+            else:
+                col[2].write(name)
+            col[3].button("Remove bridge", key=f"r_{ip_address}_{id}",
                           on_click=remove_bridge, args=str(id))
-            col[4].button("Select", key=f"s_{ip_address}_{id}",
+            col[4].button("Select bridge", key=f"s_{ip_address}_{id}",
                           on_click=select_bridge, args=ip_address)
     except ValueError:
         st.warning("No registered bridges")
@@ -198,51 +200,50 @@ def list_registered_devices():
     try:
         registered_devices = device_service.get_registered_devices()
 
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
-
         col = st.columns(11)
         col[0].write("Id")
-        col[1].write("Connection")
-        col[2].write("Installer")
-        col[3].write("Compiler")
-        col[4].write("Model")
-        col[5].write("Description")
-        col[6].write("Serial number")
+        col[1].write("Name")
+        col[2].write("Connection")
+        col[3].write("Installer")
+        col[4].write("Compiler")
+        col[5].write("Model")
+        col[6].write("Description")
+        col[7].write("Serial number")
         for row in registered_devices.sort_values("id").itertuples():
             index, name, connection, installer, compiler, model, description, serial, id = row
-            col = st.columns(11)
             col[0].write(id)
             # make selected device name bold
-            # if "id" in state and id == id:
-            #     col[1].write("**"+name+"**")
-            # else:
-            # col[1].write(name)
-            col[1].write(connection)
-            col[2].write(installer)
-            col[3].write(compiler)
-            col[4].write(model)
-            col[5].write(description)
-            col[6].write(serial)
-            col[7].button("Remove", key=f"r_{id}_{name}",
+            if "device" in state and state.device["id"] == id:
+                col[1].write(f"**:green[{name}]**")
+            else:
+                col[1].write(name)
+            col[2].write(connection)
+            col[3].write(installer)
+            col[4].write(compiler)
+            col[5].write(model)
+            col[6].write(description)
+            col[7].write(serial)
+            col[8].button("Remove device", key=f"r_{id}_{name}",
                           on_click=remove_device, args=(
                               str(id)))  # args in st.buttons is always a tuple of strings
-            col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
+            col[9].button("Modify", key=f"m_{id}_{name}", on_click=None,
                           args=(
                               registered_devices, id, name,
                               connection, installer, compiler, model, description))
-            col[9].button("Select", key=f"s_{id}_{name}",
-                          on_click=select_device,
-                          args=(
-                              id, name, connection,
-                              installer, compiler, model, description, serial))
+            col[10].button("Select device", key=f"s_{id}_{name}",
+                           on_click=select_device,
+                           args=(
+                               id, name, connection,
+                               installer, compiler, model, description, serial))
     except ValueError:
         st.warning("No registered devices.")
 
 
+# @sidebar.load_side_bar
 def main():
     load_page_info()
 
-    load_side_bar()
+    # load_side_bar()
 
     register_a_bridge()
 
@@ -253,4 +254,5 @@ def main():
     list_registered_devices()
 
 
+sidebar.load_side_bar()
 main()
