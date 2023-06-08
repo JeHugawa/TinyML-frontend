@@ -36,10 +36,7 @@ def add_new_dataset(dataset_name: str, dataset_desc:str ,files):
     """
     data = {
             "dataset_name": dataset_name,
-            "dataset_desc": dataset_desc,
-            "images": files
+            "dataset_desc": dataset_desc
             }
-    res = requests.post(f"{BACKEND_URL}/datasets/", json=data)
-    if res.status_code == 201:
-        return True
+    res = requests.post(f"{BACKEND_URL}/datasets/", params=data)
     return res.status_code

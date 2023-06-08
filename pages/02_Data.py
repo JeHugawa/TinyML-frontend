@@ -50,10 +50,11 @@ with st.form("Add a new Dataset"):
     state.add_button = False
     new_dataset_name = st.text_input("Dataset name")
     new_dataset_desc = st.text_input("Description for dataset (optional)")
+    st.warning("Uploaded files aren't saved to the server")
     uploaded_files = st.file_uploader("Choose image files", accept_multiple_files=True)
     submitted = st.form_submit_button("Add")
     if submitted:
-        response = dataset_service.add_new_dataset(new_dataset_name, new_dataset_desc,"testvalue") 
+        response = dataset_service.add_new_dataset(new_dataset_name, new_dataset_desc,uploaded_files) 
         if response == 201:
             st.success("New dataset added")
         else:
