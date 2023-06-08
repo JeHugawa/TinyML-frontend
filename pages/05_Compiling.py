@@ -14,8 +14,8 @@ st.set_page_config(
 state = st.session_state
 
 # mocking for dev only
-state.model = "Face recognition"
-state.model_id = 1
+#state.model = "Face recognition"
+#state.model_id = 1
 
 def compile(*args):
     with st.spinner("Compiling..."):
@@ -50,13 +50,13 @@ def compilation_tab():
     if "model" not in state:
         st.error("No model selected.")
     else:
-        st.button("Compile", on_click=compile, args=(str(state.model_id), quant, c_array))
+        st.button("Compile", on_click=compile, args=(str(state.model["id"]), quant, c_array))
 
 def main():
     compilation_tab()
+    sidebar.load_side_bar()
 
 main()
 
-sidebar.load_side_bar()
 
 st.header("Model compilation makes them tiny")
