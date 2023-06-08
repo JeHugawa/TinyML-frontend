@@ -46,22 +46,25 @@ def list_trained_models():
     col[3].write("Batch size")
     col[4].write("Dataset")
     col[5].write("Created")
-    for model in models:
-        col = st.columns(11)
-        dataset_id, parameters, description, id, created, _ = model.values()
-        created = datetime.fromisoformat(created)
-        created = created.strftime("%d/%m/%Y %H:%M")
-        col[0].write(id)
-        col[1].write(description)
-        col[2].write(parameters["epochs"])
-        col[3].write(parameters["batch_size"])
-        col[4].write(dataset_id)
-        col[5].write(created)
-        col[6].button("Select model", key=f"s_{id}_{description}",
-                      on_click=select_model,
-                      args=(
-                          id, description, parameters, dataset_id, created
-                      ))
+    try:
+        for model in models:
+            col = st.columns(11)
+            dataset_id, parameters, description, id, created, _ = model.values()
+            created = datetime.fromisoformat(created)
+            created = created.strftime("%d/%m/%Y %H:%M")
+            col[0].write(id)
+            col[1].write(description)
+            col[2].write(parameters["epochs"])
+            col[3].write(parameters["batch_size"])
+            col[4].write(dataset_id)
+            col[5].write(created)
+            col[6].button("Select model", key=f"s_{id}_{description}",
+                          on_click=select_model,
+                          args=(
+                              id, description, parameters, dataset_id, created
+                          ))
+    except TypeError:
+        st.warning("No models have been trained yet")
 
 
 def training():
