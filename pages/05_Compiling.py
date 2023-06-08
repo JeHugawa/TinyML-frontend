@@ -1,7 +1,10 @@
 import time
 import streamlit as st
 
+from pages.sidebar import sidebar
 from services import compile_service
+
+state = st.session_state
 
 st.set_page_config(
     page_title="Compiling",
@@ -53,3 +56,7 @@ def main():
     compilation_tab()
 
 main()
+
+sidebar.load_side_bar()
+
+st.header("Model compilation makes them tiny")
