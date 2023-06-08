@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 import streamlit as st
 
 from pages.sidebar import sidebar
@@ -13,34 +13,56 @@ st.set_page_config(
 
 state = st.session_state
 
-# mocking for dev only
-#state.model = "Face recognition"
-#state.model_id = 1
-
-state.model_id = (state.model['id'])
 
 def compile(*args):
     with st.spinner("Compiling..."):
-        time.sleep(1)
         compiler = {"model_id": args[0],
                     "quant": args[1],
                     "c_array": args[2]
         }
         response = compile_service.compile_model(compiler)
-        # add compiled model id to state
-        state.compiled_model_id = 0.5 # mock
-        st.success(response)
+        if response is not None:
+            st.success("Model compiled succesfully.")
+            state["compiled_model"] = response
+        else:
+            st.error("Could not compile model.")
+            
+
+def select_compiled_model(*args):
+    state.compiled_model = {
+        "id": args[0],
+        "model_id": args[1],
+        "created": args[2]
+    }
+    st.success(f"Selected model {state.compiled_model['id']}")
 
 
 st.header("Available compiled models")
-compiled_models = compile_service.get_compiled_models()
 
-st.write(compiled_models)
+def list_compiled_models():
+    compiled_models = compile_service.get_compiled_models()
+
+    col = st.columns(11)
+    col[0].write("ID")
+    col[1].write("Parent model id")
+    col[2].write("Created")
+    for model in compiled_models:
+        col = st.columns(11)
+        created, compiler_id, model_id, path, id = model.values()
+        created = datetime.fromisoformat(created)
+        created = created.strftime("%d/%m/%Y %H:%M")
+        col[0].write(id)
+        col[1].write(model_id)
+        col[2].write(created)
+        col[3].button("Select model", key=f"s_{id}",
+                      on_click=select_compiled_model,
+                      args=(
+                          id, model_id, created
+                      ))
 
 
 def compilation_tab():
-    st.header("Compilation settings")    
-    st.write("Hello")
+    st.header("Compilation a model")    
     quant = st.selectbox("Quantization", [
         "no quantization", "quantization", "end-to-end 8bit quantization"
     ])
@@ -50,14 +72,13 @@ def compilation_tab():
         ])
 
     if "model" not in state:
-        st.error("No model selected.")
+        st.error("Select a trained model to compile.")
     else:
         st.button("Compile", on_click=compile, args=(str(state.model["id"]), quant, c_array))
 
 def main():
     compilation_tab()
+    list_compiled_models()
     sidebar.load_side_bar()
 
 main()
-
-st.header("Model compilation makes them tiny")

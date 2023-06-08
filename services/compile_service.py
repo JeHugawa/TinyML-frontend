@@ -1,3 +1,4 @@
+import json
 import requests
 import pandas as pd
 
@@ -11,17 +12,12 @@ def compile_model(data: dict):
 
     response = requests.post(f"{BACKEND_URL}/compiled_models/models/{model_id}", json=data, timeout=(5, None))
 
-    return(f"{data} gets response {response.text}")
+    if response.status_code == 201:
+        return json.loads(response.text)
 
 
 def get_compiled_models():
-    """Return a list of all compiled models."""
-    return ("This is list.")
-    # response = requests.get(f"{BACKEND_URL}/compiled_models/", timeout=5)
+    response = requests.get(f"{BACKEND_URL}/compiled_models/", timeout=5)
 
-    # if response.text == []:
-    #     raise ValueError()
-    # compiled_models = pd.read_json(response.text)
-
-    # return compiled_models
-    
+    if response.status_code == 200:
+        return json.loads(response.text)
