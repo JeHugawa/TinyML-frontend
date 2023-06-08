@@ -78,7 +78,7 @@ def get_registered_devices():
 def get_no_of_devices():
     """Calculates number of devices in device list.
     """
-    
+
     devices = pd.DataFrame(get_registered_devices())
 
     return devices.shape[0]

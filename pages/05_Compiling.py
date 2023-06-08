@@ -26,7 +26,7 @@ def compile(*args):
             state["compiled_model"] = response
         else:
             st.error("Could not compile model.")
-            
+
 
 def select_compiled_model(*args):
     state.compiled_model = {
@@ -62,7 +62,7 @@ def list_compiled_models():
 
 
 def compilation_tab():
-    st.header("Compilation a model")    
+    st.header("Compilation a model")
     quant = st.selectbox("Quantization", [
         "no quantization", "quantization", "end-to-end 8bit quantization"
     ])
