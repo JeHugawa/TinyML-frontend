@@ -9,7 +9,7 @@ def compile_model(data: dict):
     """
     model_id = data["model_id"]
 
-    response = requests.post(f"{BACKEND_URL}/compiled_models/models/{model_id}", json=data, timeout=5)
+    response = requests.post(f"{BACKEND_URL}/compiled_models/models/{model_id}", json=data, timeout=(5, None))
 
     return(f"{data} gets response {response.text}")
 

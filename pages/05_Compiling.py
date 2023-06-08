@@ -17,6 +17,8 @@ state = st.session_state
 #state.model = "Face recognition"
 #state.model_id = 1
 
+state.model_id = (state.model['id'])
+
 def compile(*args):
     with st.spinner("Compiling..."):
         time.sleep(1)
