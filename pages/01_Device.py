@@ -211,6 +211,7 @@ def list_registered_devices():
         col[6].write("Description")
         col[7].write("Serial number")
         for row in registered_devices.sort_values("id").itertuples():
+            col = st.columns(11)
             index, name, connection, installer, compiler, model, description, serial, id = row
             col[0].write(id)
             # make selected device name bold
