@@ -13,7 +13,7 @@ def train_model(dataset_id: int, model_name: str, parameters: dict, lossfunc: st
         "parameters": parameters,
         "description": model_name
     }
-    response = requests.post(f"{BACKEND_URL}/model/dataset/?lossfunc={lossfunc}",
+    response = requests.post(f"{BACKEND_URL}/models/datasets/?lossfunc={lossfunc}",
                              json=data, timeout=(5, None))
     if response.status_code == 201:
         response_dict = json.loads(response.text)
