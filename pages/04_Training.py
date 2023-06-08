@@ -1,12 +1,19 @@
 import streamlit as st
 from services import training_service
 
+from pages.sidebar import sidebar
+
+state = st.session_state
+
 st.set_page_config(
     page_title="Training",
     layout="wide"
 )
 
+
 st.header("Model Training Camp")
+
+sidebar.load_side_bar()
 
 state = st.session_state
 
@@ -22,7 +29,7 @@ def page_info(title):
 
 
 def training_page():
-    if "dataset_name" not in st.session_state:
+    if "dataset" not in state:
         st.error("No dataset was selected. Please select one on the Data page.")
         return
 
@@ -50,15 +57,19 @@ def training_page():
                 "batch_size": batch_size
             }
             model = training_service.train_model(
-                state.dataset_id, model_name, parameters, loss_function)
+                state.dataset["id"], model_name, parameters, loss_function)
         if type(model) != list:
             st.error(
                 f"Error while training model {model['detail'][0]['loc'][1]}")
         st.success("Model trained successfully!")
 
+        state.model = model[2]
         plot.image(model[1])
         test.image(model[0], caption=model[2]["prediction"])
 
+        sidebar.load_side_bar()
+
 
 page_info('Training')
+
 training_page()
