@@ -2,17 +2,18 @@ import time
 import streamlit as st
 
 from services import compile_service
+from pages.sidebar import sidebar
+
+state = st.session_state
 
 st.set_page_config(
     page_title="Compiling",
     layout="wide"
 )
 
-state = st.session_state
-
 # mocking for dev only
-state.model = "Face recognition"
-state.model_id = 1
+#state.model = "Face recognition"
+#state.model_id = 1
 
 def compile(*args):
     with st.spinner("Compiling..."):
@@ -53,3 +54,6 @@ def main():
     compilation_tab()
 
 main()
+sidebar.load_side_bar()
+
+st.header("Model compilation makes them tiny")

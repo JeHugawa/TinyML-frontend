@@ -1,10 +1,15 @@
 import streamlit as st
+
+from pages.sidebar import sidebar
+
 from config import BACKEND_URL
 
 st.set_page_config(
     page_title="Observing",
     layout="wide"
 )
+
+sidebar.load_side_bar()
 
 st.header("Documentation")
 LINK_GITHUB = "[GitHub](https://github.com/TinyMLaas)"

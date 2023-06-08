@@ -1,4 +1,6 @@
 import streamlit as st
+
+from pages.sidebar import sidebar
 from services import dataset_service
 
 
@@ -8,16 +10,24 @@ st.set_page_config(
     layout="wide"
 )
 
+sidebar.load_side_bar()
+
 state = st.session_state
 
+
 def select_dataset(*args):
-    state.dataset_id = args[0]
-    state.dataset_name = args[1]
-    state.dataset_description = args[2]
-    state.dataset_size = args[3]
-    st.success(f"You have selected **{state.dataset_name}** dataset.")
+    state.dataset = {
+        "id": args[0],
+        "name": args[1],
+        "description": args[2],
+        "size": args[3]
+    }
+    st.success(f"You have selected **{state.dataset['name']}** dataset.")
+
+
 
 st.header("Existing datasets")
+
 
 try:
     existing_datasets = dataset_service.get_saved_datasets()
