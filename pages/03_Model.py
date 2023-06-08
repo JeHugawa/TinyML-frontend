@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import datetime
 from pages.sidebar import sidebar
-from services import model_service, training_service
+from services import model_service
 
 state = st.session_state
 
@@ -93,7 +93,7 @@ def training():
                 "img_height": img_height,
                 "batch_size": batch_size
             }
-            model = training_service.train_model(
+            model = model_service.train_model(
                 state.dataset["id"], model_name, parameters, loss_function)
         if type(model) != list:
             st.error(
@@ -103,8 +103,6 @@ def training():
         state.model = model[2]
         plot.image(model[1])
         test.image(model[0], caption=model[2]["prediction"])
-
-        sidebar.load_side_bar()
 
 
 def main():
