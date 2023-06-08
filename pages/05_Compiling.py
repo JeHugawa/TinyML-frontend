@@ -1,8 +1,8 @@
 import time
 import streamlit as st
 
-from services import compile_service
 from pages.sidebar import sidebar
+from services import compile_service
 
 state = st.session_state
 
@@ -10,6 +10,8 @@ st.set_page_config(
     page_title="Compiling",
     layout="wide"
 )
+
+state = st.session_state
 
 # mocking for dev only
 #state.model = "Face recognition"
@@ -48,12 +50,12 @@ def compilation_tab():
     if "model" not in state:
         st.error("No model selected.")
     else:
-        st.button("Compile", on_click=compile, args=(str(state.model_id), quant, c_array))
+        st.button("Compile", on_click=compile, args=(str(state.model["id"]), quant, c_array))
 
 def main():
     compilation_tab()
+    sidebar.load_side_bar()
 
 main()
-sidebar.load_side_bar()
 
 st.header("Model compilation makes them tiny")

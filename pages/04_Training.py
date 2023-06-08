@@ -63,16 +63,6 @@ def training_page():
                 f"Error while training model {model['detail'][0]['loc'][1]}")
         st.success("Model trained successfully!")
 
-    #     data = training_service.train.plot_statistics(
-    #         history, epochs_range)
-    #     tests, label = training_service.train.prediction(
-    #         model, training_service.train_ds.class_names)
-    #     if 'model' not in st.session_state:
-    #         st.session_state.model = model
-    #     plot.image(data)
-    #     test.image(tests, caption=label)
-    #    #model.save(f"{model_path}/keras_model")
-    #     st.success("Model saved!")
         state.model = model[2]
         plot.image(model[1])
         test.image(model[0], caption=model[2]["prediction"])
