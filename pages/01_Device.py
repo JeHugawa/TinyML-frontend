@@ -17,7 +17,7 @@ state = st.session_state
 def select_device(*args):
     state.device = {
         "id": args[0],
-        "device_name": args[1],
+        "name": args[1],
         "connection": args[2],
         "installer": args[3],
         "compiler": args[4],
@@ -26,7 +26,7 @@ def select_device(*args):
         "serial": args[7]
     }
     st.success(
-        (f"You have selected **{state.device['device_name']}"
+        (f"You have selected **{state.device['name']}"
          f"/ {state.device['installer']} / {state.device['connection']}**."
          ))
     # st.success(
