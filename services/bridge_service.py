@@ -38,7 +38,7 @@ def get_registered_bridges():
 
     response = requests.get(f"{BACKEND_URL}/bridges/", timeout=5)
 
-    if response.text == []:
+    if response.text == '[]':
         raise ValueError()
     dataframe = pd.read_json(response.text)
 
