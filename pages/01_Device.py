@@ -47,7 +47,7 @@ def submit_add():
         "connection": state.connection,
         "installer": state.installer,
         "compiler": state.compiler,
-        "model": state.model,
+        "model": state.device_model,
         "description": state.description,
         "serial": state.serial
     }
@@ -77,7 +77,7 @@ def handle_add(manufacturer="", product="", serialnum=""):
         st.text_input("Connection", key="connection")
         st.text_input("Installer", key="installer")
         st.text_input("Compiler", key="compiler")
-        st.text_input("Model", key="model", value=product)
+        st.text_input("Model", key="device_model", value=product)
         st.text_input("Description", key="description")
         st.text_input("Serial number", key="serial", value=serialnum)
 
