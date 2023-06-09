@@ -7,7 +7,7 @@ def load_side_bar():
         st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
     if "device" in state:
         st.sidebar.write(
-            f"Selected device: :green[{state.device['device_name']}]")
+            f"Selected device: :green[{state.device['name']}]")
         st.sidebar.write(
             f"Description: :orange[{state.device['description']}]")
     if "dataset" in state:

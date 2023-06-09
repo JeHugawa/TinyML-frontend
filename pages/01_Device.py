@@ -52,7 +52,7 @@ def submit_add():
         "serial": state.serial
     }
 
-    del state["device_name"]
+    #del state["device_name"]
     for key in device.keys():
         if key in state.keys():
             del state[key]
@@ -60,12 +60,13 @@ def submit_add():
     added_device = device_service.send_add_request(device)
 
     if added_device is None:
-        st.error("Error while adding device")
+        st.error("Can not register device. A device with this serial number is already registered.")
         return
 
     state.device = added_device
+
     st.success(
-        (f"You have added **{state.device['device_name']}"
+        (f"You have added **{state.device['name']}"
          f"/ {state.device['installer']} / {state.device['connection']}**."
          ))
 
