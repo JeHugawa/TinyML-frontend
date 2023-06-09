@@ -1,13 +1,20 @@
 import streamlit as st
 import pandas as pd
 
+from pages.sidebar import sidebar
 from services import dataset_service, device_service
+
+state = st.session_state
+
 
 # Page setup
 st.set_page_config(
     page_title="TinyMLaaS",
     layout="wide"
 )
+
+sidebar.load_side_bar()
+
 st.title("Welcome to TinyMLaaS")
 
 st.header("Device Location Map")
