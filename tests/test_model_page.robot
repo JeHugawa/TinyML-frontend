@@ -21,7 +21,7 @@ Select Dataset For Training
 
     Wait Until Page Contains Element    ${select_buttons[-1]}
     Click Element    ${select_buttons[-1]}
-    Click Element     xpath://*[text()="Model"]
+    Click Element    xpath://span[text()="Model"]
     Wait Until Page Contains    Train a model
 
 Test Train A New Model
@@ -40,8 +40,7 @@ Test Train A New Model
 Select Trained Model
    Click Element    xpath://span[text()="Model"]
    Wait Until Page Contains    Train a model
-   @{select_model_buttons}=    Get WebElements    xpath://*[text()="Select model"]
-   Wait Until Page Contains Element    ${select_model_buttons[-1]}
+   @{select_model_buttons}=    Get WebElements    xpath://p[text()="Select model"]
    Click Element    ${select_model_buttons[-1]}
    Page should Contain    Selected model
    
