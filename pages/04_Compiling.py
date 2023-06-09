@@ -62,7 +62,7 @@ def list_compiled_models():
 
 
 def compilation_tab():
-    st.header("Compilation a model")
+    st.header("Compile a model")
     quant = st.selectbox("Quantization", [
         "no quantization", "quantization", "end-to-end 8bit quantization"
     ])
