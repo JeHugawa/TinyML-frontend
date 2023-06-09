@@ -2,7 +2,6 @@ import streamlit as st
 
 state = st.session_state
 
-
 def load_side_bar():
     if "bridge" in state:
         st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
@@ -17,4 +16,4 @@ def load_side_bar():
         )
     if "model" in state:
         st.sidebar.write(
-            f"Selected model: :green[{state.model['description']}]")
+            f"Selected model: :green[{state.model}]")
