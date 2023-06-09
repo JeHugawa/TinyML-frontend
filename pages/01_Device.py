@@ -170,7 +170,8 @@ try:
         # if "selected_device" in state and state.selected_device["id"] == id:
         #    col[1].write("**"+name+"**")
         col[2].write(name)
-        col[3].button("Remove", key=f"r_{ip_address}_{id}",
+        ########
+        col[3].button("Remove bridge", key=f"r_{ip_address}_{id}",
                       on_click=remove_bridge, args=str(id))
         col[4].button("Select", key=f"s_{ip_address}_{id}",
                       on_click=select_bridge, args=ip_address)
@@ -207,7 +208,8 @@ try:
         col[4].write(model)
         col[5].write(description)
         col[6].write(serial)
-        col[7].button("Remove", key=f"r_{id}_{name}",
+        #######
+        col[7].button("Remove device", key=f"r_{id}_{name}",
                       on_click=remove_device, args=(
                           str(id)))  # args in st.buttons is always a tuple of strings
         col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
