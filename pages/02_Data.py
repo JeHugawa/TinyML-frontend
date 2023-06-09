@@ -53,6 +53,12 @@ try:
 except:
     st.warning("No datasets available.")
 
+if hasattr(state, "dataset"):
+    st.header("Add image to dataset")
+    uploaded_files = st.file_uploader("Choose images for dataset", accept_multiple_files=True)
+    if uploaded_files is not None:
+        pass #st.warning(data_service.add_image_to_dataset(st.session_state["selected_dataset"],json.dumps(dict())))
+
 st.divider()
 st.header("Add new dataset")
 
