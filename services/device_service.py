@@ -68,7 +68,7 @@ def get_registered_devices():
 
     response = requests.get(f"{BACKEND_URL}/devices/", timeout=5)
 
-    if response.text == []:
+    if response.text == '[]':
         raise ValueError()
     devices = pd.read_json(response.text)
 
