@@ -16,4 +16,4 @@ def load_side_bar():
         )
     if "model" in state:
         st.sidebar.write(
-            f"Selected model: :green[{state.model}]")
+            f"Selected model: :green[{state.model['description']}]")
