@@ -3,7 +3,7 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${BROWSER}        headlessfirefox
-${DELAY}          0.10 seconds
+${DELAY}          0.05 seconds
 ${DeviceURL}      http://localhost:8501/Device/
 
 *** Keywords ***

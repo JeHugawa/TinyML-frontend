@@ -51,8 +51,8 @@ Check That All Registered Devices Table Is Not Empty
     Wait Until Page Contains Element    xpath://*[text()="Remove device"]    10
 
 Check That Device Can Be Selected
-    Wait Until Page Contains Element    xpath://*[text()="Select"]
-    @{select_device_buttons}=    Get WebElements    xpath://*[text()="Select"]
+    Wait Until Page Contains Element    xpath://*[text()="Select device"]
+    @{select_device_buttons}=    Get WebElements    xpath://*[text()="Select device"]
     Wait Until Page Contains Element    ${select_device_buttons[-1]}
     Click Element    ${select_device_buttons[-1]}
     Page Should Contain    You have selected
