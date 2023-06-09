@@ -1,11 +1,13 @@
 *** Settings ***
 Library           SeleniumLibrary
+Library           BuiltIn
 
 *** Variables ***
 ${BROWSER}        headlessfirefox
-${DELAY}          0.10 seconds
+${DELAY}          0.05 seconds
 ${DeviceURL}      http://localhost:8501/Device/
-${ModelURL}      http://localhost:8501/Model/
+${ModelURL}       http://localhost:8501/Model/
+
 
 *** Keywords ***
 Open Browser With DeviceUrl    
