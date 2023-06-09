@@ -17,7 +17,7 @@ def find_usb_devices():
         Function returns the found connected usb devices
     """
 
-    if os.environ.get("ROBOT_TESTS") == "true":
+    if os.environ.get("ROBOT_TESTS"): #== "true":
         return [{'manufacturer': 'Arduino',
                  'product': 'Nano 33 BLE',
                  'serial': '707B266C064B14F6'}]
@@ -68,7 +68,7 @@ def get_registered_devices():
 
     response = requests.get(f"{BACKEND_URL}/devices/", timeout=5)
 
-    if response.text == []:
+    if response.text == '[]':
         raise ValueError()
     devices = pd.read_json(response.text)
 
