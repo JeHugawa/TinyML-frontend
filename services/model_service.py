@@ -6,9 +6,10 @@ from config import BACKEND_URL
 
 
 def get_models():
-    response = requests.get(f"{BACKEND_URL}/models/")
+    response = requests.get(f"{BACKEND_URL}/models/", timeout=5)
     if response.status_code == 200:
         return json.loads(response.text)
+    return None
 
 
 def train_model(dataset_id: int, model_name: str, parameters: dict, lossfunc: str):
