@@ -130,17 +130,6 @@ def load_page_info():
         st.markdown("On this page you can connect to a bridging device.")
         st.markdown(
             "It will eventually also show an overview of connected devices.")
-        # Documentation has not been brought to this version yet
-        # st.markdown("[See the doc page for more info](/Documentation)")
-
-
-# def load_side_bar():
-#     if "bridge" in state:
-#         st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
-#     if "device" in state:
-#         st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
-#         st.sidebar.write(
-#             f"Description: :orange[{state.device['description']}]")
 
 
 def list_connected_devices():

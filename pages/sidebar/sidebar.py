@@ -17,3 +17,8 @@ def load_side_bar():
     if "model" in state:
         st.sidebar.write(
             f"Selected model: :green[{state.model['description']}]")
+        st.sidebar.write(
+            f"Model's id: :green[{state.model['id']}]")
+    if "compiled_model" in state:
+            st.sidebar.write(
+            f"Compiled model: :green[{state.compiled_model['id']}]")
