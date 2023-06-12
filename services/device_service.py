@@ -9,12 +9,25 @@ from config import BACKEND_URL, ACCEPTED_VENDORS
 def find_usb_devices():
     """Find connected usb devices, that are either Arduinos or Raspberry Pis.
 
-    This requires root privileges, and when running in a docker container,
-    only devices that are connected when container is started can be found.
+    Uses external command 'lsusb' to find USB devices. This is in order to
+    find usb devices dynamically in a docker container.
+
+    Script, which finds wanted devices, is based on the output of lsusb. Using
+    the amount of whitespace in front of each line we can determine
+    what device that row belongs to. A new device always has 0 whitespace
+    in front of it, while device information has at least 1 whitespace.
+
+    More elegant solution would be to create a dictionary from the output,
+    however, this solution works perfectly fine.
+
+    TODO:
+        Windows support
 
     Returns:
         Function returns the found connected usb devices
     """
+
+    # A predetermined output for robot framework tests
     if os.environ.get("ROBOT_TESTS") == "true":
         return [{'manufacturer': 'Arduino',
                  'product': 'Nano 33 BLE',
