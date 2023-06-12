@@ -36,7 +36,6 @@ PySocks==1.7.1
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 pytz==2023.3
-pyusb==1.2.1
 requests==2.31.0
 rich==13.3.5
 robotframework==6.0.2
