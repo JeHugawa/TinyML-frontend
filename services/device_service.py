@@ -1,6 +1,5 @@
 import os
-import usb.core
-import usb.util
+from subprocess import Popen, PIPE, STDOUT
 import requests
 import pandas as pd
 
@@ -16,35 +15,32 @@ def find_usb_devices():
     Returns:
         Function returns the found connected usb devices
     """
-
-    if os.environ.get("ROBOT_TESTS"): #== "true":
+    if os.environ.get("ROBOT_TESTS") == "true":
         return [{'manufacturer': 'Arduino',
                  'product': 'Nano 33 BLE',
                  'serial': '707B266C064B14F6'}]
 
-    all_devices = list(usb.core.find(find_all=True))
+    p = Popen("lsusb -v", shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    output = p.stdout.read()
 
-    devices = []
-
-    for device in all_devices:
-        try:
-            if (usb.util.get_string(device, device.iManufacturer)
-                    in ACCEPTED_VENDORS):
-                devices.append(device)
-        except Exception as error:  # pylint: disable=broad-exception-caught
-            print(str(error))
-            continue
+    out = output.decode('utf-8').split('\n')
+    find_variables = False
 
     return_devices = []
-    for device in devices:
-        manufacturer = usb.util.get_string(
-            device, device.iManufacturer)
-        product = usb.util.get_string(device, device.iProduct)
-        serial = usb.util.get_string(device, device.iSerialNumber)
 
-        return_devices.append({"manufacturer": manufacturer,
-                               "product": product,
-                               "serial": serial})
+    for row in out:
+        if len(row) == 0:
+            continue
+        if (row[0] != " " and
+                len([row for vendor in ACCEPTED_VENDORS if vendor.lower() in row.lower()]) > 0):
+            find_variables = True
+            return_devices.append({})
+        elif row[0] != " " and "arduino" not in row.lower() and "Device Descriptor" not in row:
+            find_variables = False
+        elif find_variables:
+            row = row.split()
+            if row[0] == "iManufacturer" or row[0] == "iSerial" or row[0] == "iProduct":
+                return_devices[-1][row[0][1:].lower()] = " ".join(row[2:])
 
     return return_devices
 
