@@ -5,7 +5,7 @@ from pages.sidebar import sidebar
 from config import BACKEND_URL
 
 st.set_page_config(
-    page_title="Documentation",
+    page_title="Observing",
     layout="wide"
 )
 
