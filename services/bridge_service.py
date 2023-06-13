@@ -55,3 +55,19 @@ def try_conntection(address: str):
         return True
     except requests.exceptions.ConnectionError:
         return False
+
+
+def send_bridge_install(address: str, device, model):
+    if os.environ.get("ROBOT_TESTS") == "true":
+        return True
+    if "http" not in address:
+        address = "http://" + address
+    data = {
+        "device": device,
+        "model": model
+    }
+    res = requests.post(f'{address}:5000/install/',
+                        json=data, timeout=(5, None))
+    if res.status_code != 200:
+        return False
+    return True
