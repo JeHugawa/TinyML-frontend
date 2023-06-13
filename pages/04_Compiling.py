@@ -62,7 +62,7 @@ def list_compiled_models():
 
 
 def compilation_tab():
-    st.header("Compilation a model")
+    st.header("Compile a model")
     quant = st.selectbox("Quantization", [
         "no quantization", "quantization", "end-to-end 8bit quantization"
     ])
@@ -74,7 +74,7 @@ def compilation_tab():
     if "model" not in state:
         st.error("Select a trained model to compile.")
     else:
-        st.button("Compile", on_click=compile, args=(str(state.model["id"]), quant, c_array))
+        st.button("Start compiling", on_click=compile, args=(str(state.model["id"]), quant, c_array))
 
 def main():
     compilation_tab()
