@@ -71,7 +71,7 @@ with st.form("Add a new Dataset"):
     submitted = st.form_submit_button("Add")
     if submitted:
         response = dataset_service.add_new_dataset(new_dataset_name, new_dataset_desc,uploaded_files) 
-        if response == 201:
-            st.success("New dataset added")
+        if response == 200:
+            st.success("New dataset added with images")
         else:
             st.error(response)
