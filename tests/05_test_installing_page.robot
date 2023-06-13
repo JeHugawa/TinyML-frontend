@@ -48,3 +48,9 @@ Select Compiled Model And Bridge And Device
 
 Check For Install Button
     Wait Until Page Contains Element    xpath://*[text()="Install"]
+
+Install To Device
+    ${install_button}    Get WebElement    //p[text()="Install"]
+    Wait Until Page Contains Element    ${install_button}
+    Execute Javascript    arguments[0].click();    ARGUMENTS    ${install_button}
+    Wait Until Page Contains    Model has been installed successfully to device
