@@ -43,6 +43,10 @@ def add_new_dataset(dataset_name: str, dataset_desc:str ,files):
     if dataset_res.status_code != 201:
         return dataset_res.status_code
     dataset_id = dataset_res.json()["id"]
+    return add_image_to_dataset(dataset_id, files)
+
+
+def add_image_to_dataset(dataset_id: int, files):
     files_list = []
     for file in files:
         files_list.append(('files', file))
