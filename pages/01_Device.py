@@ -17,7 +17,7 @@ state = st.session_state
 def select_device(*args):
     state.device = {
         "id": args[0],
-        "device_name": args[1],
+        "name": args[1],
         "connection": args[2],
         "installer": args[3],
         "compiler": args[4],
@@ -26,7 +26,7 @@ def select_device(*args):
         "serial": args[7]
     }
     st.success(
-        (f"You have selected **{state.device['device_name']}"
+        (f"You have selected **{state.device['name']}"
          f"/ {state.device['installer']} / {state.device['connection']}**."
          ))
     # st.success(
@@ -47,12 +47,12 @@ def submit_add():
         "connection": state.connection,
         "installer": state.installer,
         "compiler": state.compiler,
-        "model": state.model,
+        "model": state.device_model,
         "description": state.description,
         "serial": state.serial
     }
 
-    del state["device_name"]
+    #del state["device_name"]
     for key in device.keys():
         if key in state.keys():
             del state[key]
@@ -60,12 +60,13 @@ def submit_add():
     added_device = device_service.send_add_request(device)
 
     if added_device is None:
-        st.error("Error while adding device")
+        st.error("Can not register device. A device with this serial number is already registered.")
         return
 
     state.device = added_device
+
     st.success(
-        (f"You have added **{state.device['device_name']}"
+        (f"You have added **{state.device['name']}"
          f"/ {state.device['installer']} / {state.device['connection']}**."
          ))
 
@@ -77,7 +78,7 @@ def handle_add(manufacturer="", product="", serialnum=""):
         st.text_input("Connection", key="connection")
         st.text_input("Installer", key="installer")
         st.text_input("Compiler", key="compiler")
-        st.text_input("Model", key="model", value=product)
+        st.text_input("Model", key="device_model", value=product)
         st.text_input("Description", key="description")
         st.text_input("Serial number", key="serial", value=serialnum)
 
@@ -130,17 +131,6 @@ def load_page_info():
         st.markdown("On this page you can connect to a bridging device.")
         st.markdown(
             "It will eventually also show an overview of connected devices.")
-        # Documentation has not been brought to this version yet
-        # st.markdown("[See the doc page for more info](/Documentation)")
-
-
-# def load_side_bar():
-#     if "bridge" in state:
-#         st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
-#     if "device" in state:
-#         st.sidebar.write(f"Selected device: :green[{state.device['id']}]")
-#         st.sidebar.write(
-#             f"Description: :orange[{state.device['description']}]")
 
 
 def list_connected_devices():

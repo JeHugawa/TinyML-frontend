@@ -73,8 +73,6 @@ def training():
         st.error("No dataset was selected. Please select one on the Data page.")
         return
 
-    st.write(
-        ":red[Loss function can only choose Sparce Categorical crossentropy, other one fails]")
     st.subheader("Model Training Settings")
     model_name = st.text_input("Enter name for your model")
     epochs = st.number_input("Enter the number of epochs", min_value=int(0))
