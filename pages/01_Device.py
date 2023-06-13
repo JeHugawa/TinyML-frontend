@@ -52,7 +52,7 @@ def submit_add():
         "serial": state.serial
     }
 
-    #del state["device_name"]
+    # del state["device_name"]
     for key in device.keys():
         if key in state.keys():
             del state[key]
@@ -60,7 +60,8 @@ def submit_add():
     added_device = device_service.send_add_request(device)
 
     if added_device is None:
-        st.error("Can not register device. A device with this serial number is already registered.")
+        st.error(
+            "Can not register device. A device with this serial number is already registered.")
         return
 
     state.device = added_device
@@ -87,12 +88,16 @@ def handle_add(manufacturer="", product="", serialnum=""):
         cancel_col.form_submit_button(label="Cancel")
 
 
-def select_bridge(*address):
-    address = "".join(address)
+def select_bridge(*args):
+    print(args)
 
-    if bridge_service.try_conntection(address):
-        state.bridge = address
-        st.success(f"Successfully selected bridge {state.bridge}")
+    if bridge_service.try_conntection(args[2]):
+        state.bridge = {
+            "id": args[0],
+            "name": args[1],
+            "address": args[2]
+        }
+        st.success(f"Successfully selected bridge {state.bridge['name']}")
         return
     st.error(
         "Error while trying to connect to bridge.\n"
@@ -180,7 +185,7 @@ def list_registered_bridges():
             col[3].button("Remove bridge", key=f"r_{ip_address}_{id}",
                           on_click=remove_bridge, args=str(id))
             col[4].button("Select bridge", key=f"s_{ip_address}_{id}",
-                          on_click=select_bridge, args=ip_address)
+                          on_click=select_bridge, args=(str(id), name, ip_address))
     except ValueError:
         st.warning("No registered bridges")
 

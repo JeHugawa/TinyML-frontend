@@ -57,17 +57,12 @@ def try_conntection(address: str):
         return False
 
 
-def send_bridge_install(address: str, device, model):
+def send_bridge_install(bridge_id, device_id, compiled_model_id):
     if os.environ.get("ROBOT_TESTS") == "true":
         return True
-    if "http" not in address:
-        address = "http://" + address
-    data = {
-        "device": device,
-        "model": model
-    }
-    res = requests.post(f'{address}:5000/install/',
-                        json=data, timeout=(5, None))
+    res = requests.get(
+        f'{BACKEND_URL}/compiled_models/{compiled_model_id}/bridges/{bridge_id}/devices/{device_id}',
+        timeout=(5, None))
     if res.status_code != 200:
         return False
     return True
