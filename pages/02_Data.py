@@ -25,8 +25,6 @@ def select_dataset(*args):
     st.success(f"You have selected **{state.dataset['name']}** dataset.")
 
 
-
-
 st.header("Existing datasets")
 
 
@@ -53,6 +51,21 @@ try:
 except:
     st.warning("No datasets available.")
 
+
+if hasattr(state, "dataset"):
+    st.divider()
+    st.header("Add images to Dataset")
+    with st.form("Add image to dataset"):
+        uploaded_files = st.file_uploader("Choose images for dataset", accept_multiple_files=True)
+        submitted = st.form_submit_button("Add")
+        if submitted:
+            response = dataset_service.add_image_to_dataset(state.dataset["id"],uploaded_files)
+            if response == 200:
+                st.success("Images added to dataset")
+            else:
+                st.error(response)
+
+
 st.divider()
 st.header("Add new dataset")
 
@@ -60,12 +73,11 @@ with st.form("Add a new Dataset"):
     state.add_button = False
     new_dataset_name = st.text_input("Dataset name")
     new_dataset_desc = st.text_input("Description for dataset (optional)")
-    st.warning("Uploaded files aren't saved to the server")
     uploaded_files = st.file_uploader("Choose image files", accept_multiple_files=True)
     submitted = st.form_submit_button("Add")
     if submitted:
         response = dataset_service.add_new_dataset(new_dataset_name, new_dataset_desc,uploaded_files) 
-        if response == 201:
-            st.success("New dataset added")
+        if response == 200:
+            st.success("New dataset added with images")
         else:
             st.error(response)
