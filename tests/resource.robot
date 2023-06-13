@@ -9,6 +9,7 @@ ${DeviceURL}      http://localhost:8501/Device/
 ${ModelURL}       http://localhost:8501/Model/
 ${CompilingURL}   http://localhost:8501/Compiling/
 ${ObservingURL}   http://localhost:8501/Observing/
+${InstallingURL}   http://localhost:8501/Installing/
 
 
 *** Keywords ***
@@ -26,4 +27,6 @@ Open Browser With CompilingUrl
 
 Open Browser With ObservingUrl
   Open Browser    ${ObservingURL}    ${BROWSER}
+Open Browser With InstallingUrl
+  Open Browser    ${InstallingURL}    ${BROWSER}
 	Set Selenium Speed	${DELAY}
