@@ -20,10 +20,9 @@ def select_device(*args):
         "name": args[1],
         "connection": args[2],
         "installer": args[3],
-        "compiler": args[4],
-        "model": args[5],
-        "description": args[6],
-        "serial": args[7]
+        "model": args[4],
+        "description": args[5],
+        "serial": args[6]
     }
     st.success(
         (f"You have selected **{state.device['name']}"
@@ -52,7 +51,7 @@ def submit_add():
         "serial": state.serial
     }
 
-    #del state["device_name"]
+    # del state["device_name"]
     for key in device.keys():
         if key in state.keys():
             del state[key]
@@ -60,7 +59,7 @@ def submit_add():
     added_device = device_service.send_add_request(device)
 
     if added_device is None:
-        st.error("Can not register device. A device with this serial number is already registered.")
+        st.error("Can not register device. Computer says no.")
         return
 
     state.device = added_device
@@ -87,12 +86,16 @@ def handle_add(manufacturer="", product="", serialnum=""):
         cancel_col.form_submit_button(label="Cancel")
 
 
-def select_bridge(*address):
-    address = "".join(address)
+def select_bridge(*args):
+    print(args)
 
-    if bridge_service.try_conntection(address):
-        state.bridge = address
-        st.success(f"Successfully selected bridge {state.bridge}")
+    if bridge_service.try_conntection(args[2]):
+        state.bridge = {
+            "id": args[0],
+            "name": args[1],
+            "address": args[2]
+        }
+        st.success(f"Successfully selected bridge {state.bridge['name']}")
         return
     st.error(
         "Error while trying to connect to bridge.\n"
@@ -180,7 +183,7 @@ def list_registered_bridges():
             col[3].button("Remove bridge", key=f"r_{ip_address}_{id}",
                           on_click=remove_bridge, args=str(id))
             col[4].button("Select bridge", key=f"s_{ip_address}_{id}",
-                          on_click=select_bridge, args=ip_address)
+                          on_click=select_bridge, args=(str(id), name, ip_address))
     except ValueError:
         st.warning("No registered bridges")
 
@@ -196,13 +199,12 @@ def list_registered_devices():
         col[1].write("Name")
         col[2].write("Connection")
         col[3].write("Installer")
-        col[4].write("Compiler")
-        col[5].write("Model")
-        col[6].write("Description")
-        col[7].write("Serial number")
+        col[4].write("Model")
+        col[5].write("Description")
+        col[6].write("Serial number")
         for row in registered_devices.sort_values("id").itertuples():
             col = st.columns(11)
-            index, name, connection, installer, compiler, model, description, serial, id = row
+            index, name, connection, installer_id, model, description, serial, id, installer = row
             col[0].write(id)
             # make selected device name bold
             if "device" in state and state.device["id"] == id:
@@ -210,23 +212,22 @@ def list_registered_devices():
             else:
                 col[1].write(name)
             col[2].write(connection)
-            col[3].write(installer)
-            col[4].write(compiler)
-            col[5].write(model)
-            col[6].write(description)
-            col[7].write(serial)
-            col[8].button("Remove device", key=f"r_{id}_{name}",
+            col[3].write(installer["name"])
+            col[4].write(model)
+            col[5].write(description)
+            col[6].write(serial)
+            col[7].button("Remove device", key=f"r_{id}_{name}",
                           on_click=remove_device, args=(
                               str(id)))  # args in st.buttons is always a tuple of strings
-            col[9].button("Modify", key=f"m_{id}_{name}", on_click=None,
+            col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
                           args=(
                               registered_devices, id, name,
-                              connection, installer, compiler, model, description))
-            col[10].button("Select device", key=f"s_{id}_{name}",
+                              connection, installer_id, model, description))
+            col[9].button("Select device", key=f"s_{id}_{name}",
                            on_click=select_device,
                            args=(
                                id, name, connection,
-                               installer, compiler, model, description, serial))
+                               installer_id, model, description, serial))
     except ValueError:
         st.warning("No registered devices.")
 

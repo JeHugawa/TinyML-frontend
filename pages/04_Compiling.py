@@ -48,7 +48,7 @@ def list_compiled_models():
     col[2].write("Created")
     for model in compiled_models:
         col = st.columns(11)
-        created, compiler_id, model_id, path, id = model.values()
+        created, model_id, path, id = model.values()
         created = datetime.fromisoformat(created)
         created = created.strftime("%d/%m/%Y %H:%M")
         col[0].write(id)
