@@ -10,6 +10,7 @@ ${ModelURL}       http://localhost:8501/Model/
 ${CompilingURL}   http://localhost:8501/Compiling/
 ${ObservingURL}   http://localhost:8501/Observing/
 ${InstallingURL}   http://localhost:8501/Installing/
+${DataURL}        http://localhost:8501/Data/
 
 
 *** Keywords ***
@@ -30,3 +31,7 @@ Open Browser With ObservingUrl
 Open Browser With InstallingUrl
   Open Browser    ${InstallingURL}    ${BROWSER}
 	Set Selenium Speed	${DELAY}
+
+Open Browser With DataUrl
+  Open Browser    ${DataURL}        ${Browser}
+    Set Selenium Speed  ${DELAY}
