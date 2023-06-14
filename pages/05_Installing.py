@@ -16,11 +16,13 @@ st.header("Install model to MCU")
 
 
 def install():
-    if bridge_service.send_bridge_install(
-            state.bridge, state.device, state.compiled_model):
-        st.success("Model has been installed successfully to device")
-    else:
-        st.error("An error has occured while installing the model")
+    with st.spinner("Installing to device..."):
+        st.warning("This can take a while. Go get some coffee")
+        if bridge_service.send_bridge_install(
+                state.bridge['id'], state.device['id'], state.compiled_model['id']):
+            st.success("Model has been installed successfully to device")
+        else:
+            st.error("An error has occured while installing the model")
 
 
 def load_info():

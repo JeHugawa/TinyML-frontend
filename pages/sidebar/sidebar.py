@@ -5,7 +5,7 @@ state = st.session_state
 
 def load_side_bar():
     if "bridge" in state:
-        st.sidebar.write(f"Selected bridge: :green[{state.bridge}]")
+        st.sidebar.write(f"Selected bridge: :green[{state.bridge['name']}]")
     if "device" in state:
         st.sidebar.write(
             f"Selected device: :green[{state.device['name']}]")
