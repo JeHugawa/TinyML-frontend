@@ -42,7 +42,7 @@ def find_usb_devices():
     return_devices = []
 
     for row in out:
-        if len(row) == 0:
+        if len(row.split()) == 0:
             continue
         if (row[0] != " " and
                 len([row for vendor in ACCEPTED_VENDORS if vendor.lower() in row.lower()]) > 0):

@@ -49,7 +49,7 @@ def try_conntection(address: str):
     if os.environ.get("ROBOT_TESTS") == "true":
         return True
     if "http" not in address:
-        address = "http://" + address
+        address = "http://" + address + ":5000"
     try:
         requests.get(address, timeout=5)
         return True
