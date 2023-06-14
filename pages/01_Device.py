@@ -1,8 +1,7 @@
 import streamlit as st
-import pandas as pd
 
 from pages.sidebar import sidebar
-from services import device_service, bridge_service
+from services import device_service, bridge_service, installing_service
 
 
 # Page setup
@@ -12,7 +11,6 @@ st.set_page_config(
 )
 
 state = st.session_state
-
 
 def select_device(*args):
     state.device = {
@@ -26,7 +24,7 @@ def select_device(*args):
     }
     st.success(
         (f"You have selected **{state.device['name']}"
-         f"/ {state.device['installer']} / {state.device['connection']}**."
+         f"/ {state.device['connection']}**."
          ))
     # st.success(
     #     f"You have selected **{state.device_name} / {state.installer} / {state.connection}**.")
@@ -44,14 +42,12 @@ def submit_add():
     device = {
         "name": state.device_name,
         "connection": state.connection,
-        "installer": state.installer,
-        "compiler": state.compiler,
+        "installer_id": state.installer_id,
         "model": state.device_model,
         "description": state.description,
         "serial": state.serial
     }
 
-    # del state["device_name"]
     for key in device.keys():
         if key in state.keys():
             del state[key]
@@ -66,17 +62,28 @@ def submit_add():
 
     st.success(
         (f"You have added **{state.device['name']}"
-         f"/ {state.device['installer']} / {state.device['connection']}**."
+         f"/ {state.device['installer']['name']} / {state.device['connection']}**."
          ))
 
 
 def handle_add(manufacturer="", product="", serialnum=""):
+    installers = installing_service.get_installers()
+    display = [installer["name"] for installer in installers]
+    installer_id = [installer["id"] for installer in installers]
+    installer_options = dict(zip(installer_id, display))
+
+    def format_func(option):
+        return installer_options[option]
+
     with st.form("new_device"):
         st.write("Add a new device")
         st.text_input("Device name", key="device_name", value=manufacturer)
         st.text_input("Connection", key="connection")
-        st.text_input("Installer", key="installer")
-        st.text_input("Compiler", key="compiler")
+        state.installer_id = st.selectbox(
+            "Installer",
+            options=installer_id,
+            format_func=format_func
+            )
         st.text_input("Model", key="device_model", value=product)
         st.text_input("Description", key="description")
         st.text_input("Serial number", key="serial", value=serialnum)
@@ -161,8 +168,6 @@ def list_connected_devices():
 def list_registered_bridges():
     st.header("All registered bridges")
 
-    col1, col2 = st.columns(2)
-
     col = st.columns(10, gap="small")
 
     try:
@@ -204,7 +209,7 @@ def list_registered_devices():
         col[6].write("Serial number")
         for row in registered_devices.sort_values("id").itertuples():
             col = st.columns(11)
-            index, name, connection, installer_id, model, description, serial, id, installer = row
+            _, name, connection, installer_id, model, description, serial, id, installer = row
             col[0].write(id)
             # make selected device name bold
             if "device" in state and state.device["id"] == id:

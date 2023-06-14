@@ -33,8 +33,8 @@ def find_usb_devices():
                  'product': 'Nano 33 BLE',
                  'serial': '707B266C064B14F6'}]
 
-    p = Popen("lsusb -v", shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-    output = p.stdout.read()
+    pipe = Popen("lsusb -v", shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    output = pipe.stdout.read()
 
     out = output.decode('utf-8').split('\n')
     find_variables = False
@@ -65,7 +65,6 @@ def send_add_request(data: dict):
         data: The data of the device
     """
 
-    data = {key: val if len(val) > 0 else None for key, val in data.items()}
     res = requests.post(f"{BACKEND_URL}/devices/", json=data, timeout=5)
     if res.status_code == 201:
         return res.json()
