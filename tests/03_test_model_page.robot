@@ -19,8 +19,8 @@ Select Dataset For Training
     @{select_buttons}=    Get WebElements    xpath://*[text()="Select"]
 
 
-    Wait Until Page Contains Element    ${select_buttons[-1]}
-    Click Element    ${select_buttons[-1]}
+    Wait Until Page Contains Element    ${select_buttons[0]}
+    Click Element    ${select_buttons[0]}
     Maximize Browser Window
      
     ${link_to_models}    Get WebElement    //*[text()="Model"]
