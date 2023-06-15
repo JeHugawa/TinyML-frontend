@@ -31,5 +31,6 @@ Select Dataset
 
 
     Wait Until Page Contains Element    ${select_buttons[-1]}
-    Click Element   ${select_buttons[-1]}
+    Execute Javascript    arguments[0].click();     ARGUMENTS    ${select_buttons[-1]}
+    #Click Element   ${select_buttons[-1]}
     Maximize Browser Window

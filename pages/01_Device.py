@@ -195,7 +195,6 @@ def list_registered_bridges():
 
 def list_registered_devices():
     st.header("All registered devices")
-
     try:
         registered_devices = device_service.get_registered_devices()
 
@@ -209,7 +208,7 @@ def list_registered_devices():
         col[6].write("Serial number")
         for row in registered_devices.sort_values("id").itertuples():
             col = st.columns(11)
-            _, name, connection, installer_id, model, description, serial, id, installer = row
+            _, name, connection, installer_id, model, description, serial, id, installer, _ = row
             col[0].write(id)
             # make selected device name bold
             if "device" in state and state.device["id"] == id:
@@ -222,17 +221,17 @@ def list_registered_devices():
             col[5].write(description)
             col[6].write(serial)
             col[7].button("Remove device", key=f"r_{id}_{name}",
-                          on_click=remove_device, args=(
-                              str(id)))  # args in st.buttons is always a tuple of strings
+                            on_click=remove_device, args=(
+                                str(id)))  # args in st.buttons is always a tuple of strings
             col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
-                          args=(
-                              registered_devices, id, name,
-                              connection, installer_id, model, description))
+                            args=(
+                                registered_devices, id, name,
+                                connection, installer_id, model, description))
             col[9].button("Select device", key=f"s_{id}_{name}",
-                           on_click=select_device,
-                           args=(
-                               id, name, connection,
-                               installer_id, model, description, serial))
+                            on_click=select_device,
+                            args=(
+                                id, name, connection,
+                                installer_id, model, description, serial))
     except ValueError:
         st.warning("No registered devices.")
 
