@@ -55,11 +55,11 @@ Start And Stop Observing
 
     Click Element    ${start_observing}
 
-    Wait Until Page Contains    Prediction score
+    Wait Until Page Contains    Image is target:
     
     Click Element    ${stop_observing}
 
-    Page Should Not Contain    Prediction score
+    Page Should Not Contain    Image is target:
 
 
    

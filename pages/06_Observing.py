@@ -39,13 +39,16 @@ def observe_person_detection():
         start_clicked = bt_columns[0].button("Start")
         stop_clicked = bt_columns[1].button("Stop")
 
-        predictions = st.empty()
+        prediction_target = st.empty()
+        prediction_not_target = st.empty()
 
         while start_clicked and not stop_clicked:
             for i in range(0,10):
                 time.sleep(0.5)
-                prediction = observing_service.observe_device(1)
-                predictions.write(f"Prediction score: {prediction}")
+                prediction = observing_service.observe_device(state.device['id'],state.bridge['id'])
+                #st.write(prediction)
+                prediction_target.write(f"Image is target: {prediction['target']}%")
+                prediction_not_target.write(f"Image is not target: {prediction['not_target']}%")
 
 
 def main():
