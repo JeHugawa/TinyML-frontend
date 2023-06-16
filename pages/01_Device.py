@@ -1,7 +1,7 @@
 import streamlit as st
 
 from pages.sidebar import sidebar
-from services import device_service, bridge_service, installing_service
+from services import device_service, bridge_service, installer_service
 
 
 # Page setup
@@ -67,7 +67,7 @@ def submit_add():
 
 
 def handle_add(manufacturer="", product="", serialnum=""):
-    installers = installing_service.get_installers()
+    installers = installer_service.get_installers()
     display = [installer["name"] for installer in installers]
     installer_id = [installer["id"] for installer in installers]
     installer_options = dict(zip(installer_id, display))
