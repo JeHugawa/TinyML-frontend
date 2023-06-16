@@ -28,7 +28,7 @@ def find_usb_devices():
     """
 
     # A predetermined output for robot framework tests
-    if os.environ.get("ROBOT_TESTS") == "true":
+    if os.environ.get("ROBOT_TESTS"): #== "true":
         return [{'manufacturer': 'Arduino',
                  'product': 'Nano 33 BLE',
                  'serial': '707B266C064B14F6'}]
