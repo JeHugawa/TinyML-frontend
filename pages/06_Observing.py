@@ -44,7 +44,7 @@ def observe_person_detection():
         while start_clicked and not stop_clicked:
             for i in range(0,10):
                 time.sleep(0.5)
-                prediction = observing_service.observe_device(1)
+                prediction = observing_service.observe_device(1,1) #TODO kovakoodattu bridge_id
                 predictions.write(f"Prediction score: {prediction}")
 
 

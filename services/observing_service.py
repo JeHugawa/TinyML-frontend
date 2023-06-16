@@ -10,7 +10,7 @@ def observe_device(device_id):
     if os.environ.get("ROBOT_TESTS") == "true":
         return("%.2f" % random.uniform(0, 1))
 
-    response = requests.GET(f"{BACKEND_URL}/bridges/ /devices/{device_id}", timeout = 2).json()
+    response = requests.GET(f"{BACKEND_URL}/bridges/1/devices/{device_id}", timeout = 2).json()
     return(response['observation_value'])
 
 
