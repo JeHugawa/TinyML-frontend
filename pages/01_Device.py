@@ -12,6 +12,7 @@ st.set_page_config(
 
 state = st.session_state
 
+
 def select_device(*args):
     state.device = {
         "id": args[0],
@@ -83,7 +84,7 @@ def handle_add(manufacturer="", product="", serialnum=""):
             "Installer",
             options=installer_id,
             format_func=format_func
-            )
+        )
         st.text_input("Model", key="device_model", value=product)
         st.text_input("Description", key="description")
         st.text_input("Serial number", key="serial", value=serialnum)
@@ -94,9 +95,8 @@ def handle_add(manufacturer="", product="", serialnum=""):
 
 
 def select_bridge(*args):
-    print(args)
 
-    if bridge_service.try_conntection(args[2]):
+    if bridge_service.try_conntection(args[0]):
         state.bridge = {
             "id": args[0],
             "name": args[1],
@@ -221,17 +221,17 @@ def list_registered_devices():
             col[5].write(description)
             col[6].write(serial)
             col[7].button("Remove device", key=f"r_{id}_{name}",
-                            on_click=remove_device, args=(
-                                str(id)))  # args in st.buttons is always a tuple of strings
+                          on_click=remove_device, args=(
+                              str(id)))  # args in st.buttons is always a tuple of strings
             col[8].button("Modify", key=f"m_{id}_{name}", on_click=None,
-                            args=(
-                                registered_devices, id, name,
-                                connection, installer_id, model, description))
+                          args=(
+                              registered_devices, id, name,
+                              connection, installer_id, model, description))
             col[9].button("Select device", key=f"s_{id}_{name}",
-                            on_click=select_device,
-                            args=(
-                                id, name, connection,
-                                installer_id, model, description, serial))
+                          on_click=select_device,
+                          args=(
+                              id, name, connection,
+                              installer_id, model, description, serial))
     except ValueError:
         st.warning("No registered devices.")
 

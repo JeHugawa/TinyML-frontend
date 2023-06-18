@@ -28,12 +28,13 @@ def find_usb_devices():
     """
 
     # A predetermined output for robot framework tests
-    if os.environ.get("ROBOT_TESTS"): #== "true":
+    if os.environ.get("ROBOT_TESTS") == "true":
         return [{'manufacturer': 'Arduino',
                  'product': 'Nano 33 BLE',
                  'serial': '707B266C064B14F6'}]
 
-    pipe = Popen("lsusb -v", shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    pipe = Popen("lsusb -v", shell=True, stdin=PIPE,
+                 stdout=PIPE, stderr=STDOUT)
     output = pipe.stdout.read()
 
     out = output.decode('utf-8').split('\n')

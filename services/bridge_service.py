@@ -45,13 +45,10 @@ def get_registered_bridges():
     return dataframe
 
 
-def try_conntection(address: str):
+def try_conntection(bridge_id: str):
     if os.environ.get("ROBOT_TESTS") == "true":
         return True
-    if "http" not in address:
-        address = "http://" + address + ":5000"
-    try:
-        requests.get(address, timeout=5)
-        return True
-    except requests.exceptions.ConnectionError:
-        return False
+    response = requests.get(
+        f"{BACKEND_URL}/bridges/{bridge_id}/health", timeout=(5, None))
+    res = json.loads(response.text)
+    return res["online"]
