@@ -1,6 +1,6 @@
 import streamlit as st
 
-from services import bridge_service
+from services import installer_service
 from pages.sidebar import sidebar
 
 st.set_page_config(
@@ -18,7 +18,7 @@ st.header("Install model to MCU")
 def install():
     with st.spinner("Installing to device..."):
         st.warning("This can take a while. Go get some coffee")
-        if bridge_service.send_bridge_install(
+        if installer_service.send_bridge_install(
                 state.bridge['id'], state.device['id'], state.compiled_model['id']):
             st.success("Model has been installed successfully to device")
         else:

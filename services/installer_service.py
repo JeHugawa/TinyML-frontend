@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 
@@ -14,3 +15,14 @@ def get_installers():
     devices = json.loads(response.text)
 
     return devices
+
+
+def send_bridge_install(bridge_id, device_id, compiled_model_id):
+    if os.environ.get("ROBOT_TESTS") == "true":
+        return True
+    res = requests.post(
+        f'{BACKEND_URL}/compiled_models/{compiled_model_id}/bridges/{bridge_id}/devices/{device_id}',
+        timeout=(5, None))
+    if res.status_code != 201:
+        return False
+    return True
