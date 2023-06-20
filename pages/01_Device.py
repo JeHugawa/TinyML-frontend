@@ -119,17 +119,17 @@ def remove_bridge(*args):
 
 def register_a_bridge():
     with st.expander("Register a bridging device", expanded=False):
-        ip_addr = st.text_input('IP address of the bridging server')
+        ip_addr = st.text_input('IP address or URL of the bridging server')
         bridge_name = st.text_input('Name of server (Optional)')
+        https = st.checkbox('Use https for bridge')
         register = st.button('Add')
 
         if register:
-            added = bridge_service.add_bridge(ip_addr, bridge_name)
+            added = bridge_service.add_bridge(
+                ip_addr, bridge_name, str(https))
             if added is not None:
-                error = added["detail"][0]["msg"]
-                field = added["detail"][0]["loc"][1]
-                st.error((f":red[Error with field] :orange[{field}]: "
-                         f":orange[{error}]"))
+                error = added["detail"]
+                st.error(error)
             else:
                 st.success("Bridging device registered successfully! 🔥")
 
@@ -176,7 +176,7 @@ def list_registered_bridges():
         col[1].write("Address")
         col[2].write("Name")
         for row in registered_bridges.sort_values("id").itertuples():
-            _, ip_address, name, id = row
+            _, ip_address, name, _, id = row
             col = st.columns(10, gap="small")
 
             col[0].write(id)

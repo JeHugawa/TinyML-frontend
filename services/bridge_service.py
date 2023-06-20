@@ -7,10 +7,11 @@ import pandas as pd
 BACKEND_URL = os.getenv("BACKEND_URL")
 
 
-def add_bridge(address: str, name: str = None):
+def add_bridge(address: str, name: str = None, https: str = "False"):
     data = {
-        "ip_address": address,
-        "name": name
+        "address": address,
+        "name": name,
+        "https": https
     }
     data = {key: val if len(val) > 0 else None for key, val in data.items()}
     response = requests.post(f"{BACKEND_URL}/bridges/", json=data, timeout=5)
