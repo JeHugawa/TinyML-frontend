@@ -72,6 +72,7 @@ Run Robot Framework tests with:
 ```
 robot -d robot_output tests/
 ```
+The -d flag directs the robot test outputs, which can be quite generous, to a named folder. 
 
 
 
