@@ -63,8 +63,8 @@ In the backend you will need to have enough test data in the database to run the
 
 ```
 touch tiny_mlaas.db
-sqlite3 < schema.sql
-sqlite3 < populate.sql
+sqlite3 tiny_mlaas.db < schema.sql
+sqlite3 tiny_mlaas.db < populate.sql
 ```
 
 Run Robot Framework tests with:
