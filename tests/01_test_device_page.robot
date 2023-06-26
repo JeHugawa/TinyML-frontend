@@ -9,12 +9,12 @@ Suite Teardown    Close Browser
 Check That Register A Bridging Device Button Opens A Form
     Wait Until Page Contains    Register a bridging device
     Click Element    //*[contains(text(),"Register a bridging device")]
-    Page Should Contain    IP address of the bridging server
+    Page Should Contain    IP address or URL of the bridging server
     Page Should Contain    Name of server (Optional)
 
 Check Registering A Bridging Device Without An IP Address Results In Error
     Click Element    //*[contains(text(),"Add")]
-    Wait Until Page Contains    Error with field ip_address: none is not an allowed value
+    Wait Until Page Contains    Please enter IP address or URL of bridge.
 
 # Check Registering A Bridging Device With Invalid IP Address Results In Error
 # Check Bridgind Device Can Be Added With A Valid IP Address
