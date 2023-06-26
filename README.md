@@ -50,7 +50,22 @@ streamlit run TinyMLaaS.py
 
 ## Testing
 
-For testing you need to have both the backend, frontend running and bridge.
+This project uses Robot Framework to run end-to-end testing. For testing you need to have both the backend and frontend running. Before running frontend, environment variable _ROBOT_TESTS_ 
+should be set to _true_. On bash, you can do that with
+
+```
+ROBOT_TESTS=true && export ROBOT_TESTS
+```
+
+This makes it that the robot tests don't access actual usb-devices, but rather use sepcifically defined mock data.
+
+In the backend you will need to have enough test data in the database to run the robot tests. You can set up the database in the backend folder with
+
+```
+touch tiny_mlaas.db
+sqlite3 < schema.sql
+sqlite3 < populate.sql
+```
 
 Run Robot Framework tests with:
 
@@ -58,12 +73,5 @@ Run Robot Framework tests with:
 robot -d robot_output tests/
 ```
 
-When Robot Framework tests are run, the environment variable _ROBOT_TESTS_ 
-should be set to _true_. On bash, you can do that with
 
-```
-ROBOT_TESTS=true && export ROBOT_TESTS
-```
 
-This makes it that the robot tests don't access actual usb-devices, but rather
-return set data.
