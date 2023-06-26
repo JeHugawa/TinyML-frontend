@@ -106,10 +106,34 @@ def training():
         test.image(model[0], caption=model[2]["prediction"])
 
 
+def continue_training():
+    st.subheader("Continue Training")
+    if not hasattr(state, "dataset"):
+        st.warning("You need to select a dataset first")
+        return
+    if st.button("retrain model"):
+        with st.spinner("Training..."):
+            plot = st.empty()
+            test = st.empty()
+            model = model_service.continue_training_model(
+                state.dataset["id"], state.model["id"])
+        if type(model) != list:
+            st.error(
+                f"Error while training model {model['detail'][0]['loc'][1]}")
+        st.success("Model trained successfully!")
+
+        state.model = model[2]
+        plot.image(model[1])
+        test.image(model[0], caption=model[2]["prediction"])
+
+
 def main():
     load_page_info("Models")
 
     list_trained_models()
+
+    if hasattr(state, "model"):
+        continue_training()
 
     training()
 

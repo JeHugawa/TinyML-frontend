@@ -28,3 +28,17 @@ def train_model(dataset_id: int, model_name: str, parameters: dict, lossfunc: st
         del response_dict["statistic_image"]
         return [img_pred, img_stats, response_dict]
     return json.loads(response.text)
+
+
+def  continue_training_model(dataset_id: int, model_id):
+    response = requests.put(f"{BACKEND_URL}/models/{model_id}/datasets/{dataset_id}")
+    if response.status_code == 200:
+        response_dict = json.loads(response.text)
+        img_pred = base64.b64decode(response_dict["prediction_image"])
+        del response_dict["prediction_image"]
+        img_stats = base64.b64decode(response_dict["statistic_image"])
+        del response_dict["statistic_image"]
+        return [img_pred, img_stats, response_dict]
+    return json.loads(response.text)
+
+
