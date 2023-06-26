@@ -2,7 +2,7 @@
 
 ![GitHub Actions](https://github.com/TinyMLaas/TinyML-frontend/actions/workflows/frontend_pylint.yml/badge.svg)
 
-frontend for the [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main).
+frontend for [TinyMLaaS](https://github.com/JeHugawa/TinyMLaaS-main).
 
 ## Dependecies
 
