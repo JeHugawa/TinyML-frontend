@@ -86,3 +86,5 @@ Check That Register This Device Button Opens Form
 
 Check Page Contains Register A Bridge
     Wait Until Page Contains    Register a bridging device
+
+    
