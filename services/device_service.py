@@ -2,6 +2,7 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 import requests
 import pandas as pd
+import json
 
 from config import BACKEND_URL, ACCEPTED_VENDORS
 
@@ -105,3 +106,10 @@ def remove_device(*args):
 
     if response.status_code == 400:
         raise ValueError()
+
+
+def find_bridge_devices(bridge_id):
+    response = requests.get(
+        f"{BACKEND_URL}/bridges/{bridge_id}/devices", timeout=5)
+    devices = json.loads(response.text)["devices"]
+    return devices

@@ -193,6 +193,32 @@ def list_registered_bridges():
         st.warning("No registered bridges")
 
 
+def list_bridge_devices():
+    st.header("Devices connected to bridge")
+    if "bridge" not in state:
+        st.error("Select a bridge to show devices connected to that bridge")
+        return
+
+    st.button("Refresh", key="refresh")
+
+    if "added" in state:
+        if state.added is not None:
+            error = state.added["detail"][0]["msg"]
+            field = state.added["detail"][0]["loc"][1]
+            st.write(f":red[Error with field] :orange[{field}]:")
+            st.write(f":orange[{error}]")
+    devices = device_service.find_bridge_devices(state.bridge["id"])
+    device_col1, device_col2, device_col3, device_col4 = st.columns(4)
+
+    for i, device in enumerate(devices, start=1):
+        device_col1.write(device["manufacturer"])
+        device_col2.write(device["product"])
+        device_col3.write(device["serial"])
+        device_col4.button("Register this device", key=i, on_click=handle_add, args=(
+            device["manufacturer"], device["product"], device["serial"]
+        ))
+
+
 def list_registered_devices():
     st.header("All registered devices")
     try:
@@ -241,9 +267,15 @@ def main():
 
     register_a_bridge()
 
-    list_connected_devices()
+    if st.button("Register a new device"):
+        handle_add()
+
+    # This is depraceted!
+    # list_connected_devices()
 
     list_registered_bridges()
+
+    list_bridge_devices()
 
     list_registered_devices()
 
