@@ -20,11 +20,9 @@ Check Registering A Bridging Device Without An IP Address Results In Error
 # Check Bridgind Device Can Be Added With A Valid IP Address
 # Checks including the Name of Server
 
-Check Header For Connected Devices Table
-    Page Should Contain    Connected devices
 
 Check Clicking Register This Device Opens Up A Form
-    Click Element    //*[contains(text(),"Register this device")]
+    Click Element    //*[contains(text(),"Register a new device")]
     Page Should Contain    Add a new device
 
 # Add tests for adding a new device with different valid and invalid parameters
@@ -50,21 +48,28 @@ Check That All Registered Bridges Table Is Not Empty
 Check That All Registered Devices Table Is Not Empty
     Wait Until Page Contains Element    xpath://*[text()="Remove device"]    10
 
+Check That Bridge Can Be Selected
+    Wait Until Page Contains Element    xpath://*[text()="Select bridge"]
+    @{select_bridge_buttons}=    Get WebElements    xpath://*[text()="Select bridge"]
+    Wait Until Page Contains Element    ${select_bridge_buttons[-1]}
+    Click Element    ${select_bridge_buttons[-1]}
+    Page Should Contain    Successfully selected bridge
+
+Check Header For Connected Devices Table
+    Page Should Contain    Devices connected to bridge
+
+Check That There Is A Connected Device
+    Page Should Contain    Nano 33 BLE
+
+Check For Register This Device Button
+    Page Should Contain Button    Register this device
+
 Check That Device Can Be Selected
     Wait Until Page Contains Element    xpath://*[text()="Select device"]
     @{select_device_buttons}=    Get WebElements    xpath://*[text()="Select device"]
     Wait Until Page Contains Element    ${select_device_buttons[-1]}
     Click Element    ${select_device_buttons[-1]}
     Page Should Contain    You have selected
-
-Check That There Is A Connected Device
-    Page Should Contain    Nano 33 BLE
-
-Check Header For Connected Devices
-    Page Should Contain    Connected devices
-
-Check For Register This Device Button
-    Page Should Contain Button    Register this device
 
 Remove Last Registered Bridge In The All Registered Bridges List Test 
     Wait Until Page Contains Element    xpath://*[text()="Remove bridge"]    30

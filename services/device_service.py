@@ -8,7 +8,9 @@ from config import BACKEND_URL, ACCEPTED_VENDORS
 
 
 def find_usb_devices():
-    """Find connected usb devices, that are either Arduinos or Raspberry Pis.
+    """DEPRECATED! Use find_bridge_devices instead.
+
+    Find connected usb devices, that are either Arduinos or Raspberry Pis.
 
     Uses external command 'lsusb' to find USB devices. This is in order to
     find usb devices dynamically in a docker container.
@@ -109,6 +111,12 @@ def remove_device(*args):
 
 
 def find_bridge_devices(bridge_id):
+    # A predetermined output for robot framework tests
+    if os.environ.get("ROBOT_TESTS") == "true":
+        return [{'manufacturer': 'Arduino',
+                 'product': 'Nano 33 BLE',
+                 'serial': '707B266C064B14F6'}]
+
     response = requests.get(
         f"{BACKEND_URL}/bridges/{bridge_id}/devices", timeout=5)
     devices = json.loads(response.text)["devices"]
