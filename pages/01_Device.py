@@ -129,7 +129,7 @@ def register_a_bridge():
                 ip_addr, bridge_name, str(https))
             if added is not None:
                 error = added["detail"]
-                st.error(error)
+                st.error("Please enter IP address or URL of bridge.")
             else:
                 st.success("Bridging device registered successfully! 🔥")
 
