@@ -1,7 +1,5 @@
 import time
-from datetime import datetime
 import streamlit as st
-import pandas as pd
 
 from pages.sidebar import sidebar
 from services import observing_service
@@ -13,12 +11,15 @@ st.set_page_config(
 
 state = st.session_state
 
+
 def page_info():
     col = st.columns(4)
 
     with col[-1].expander("ℹ️ Help"):
-        st.markdown("On this page you can observe the predictions sent from the TinyML device.")
-        st.markdown("Click the Start button to start reading predictions from the device")
+        st.markdown(
+            "On this page you can observe the predictions sent from the TinyML device.")
+        st.markdown(
+            "Click the Start button to start reading predictions from the device")
 
 
 def observe_person_detection():
@@ -28,10 +29,8 @@ def observe_person_detection():
         if "bridge" not in st.session_state:
             st.error("Bridge not selected. Please select it on the device page.")
 
-
         if "device" not in st.session_state:
             st.error("Select device to observe.")
-            st.write("<LIST OF DEVICES CONNECTED TO THIS BRIDGE>")
 
     else:
 
@@ -43,17 +42,21 @@ def observe_person_detection():
         prediction_not_target = st.empty()
 
         while start_clicked and not stop_clicked:
-            for i in range(0,10):
+            for i in range(0, 10):
                 time.sleep(0.5)
-                prediction = observing_service.observe_device(state.device['id'],state.bridge['id'])
-                #st.write(prediction)
-                prediction_target.write(f"Image is target: {prediction['target']}%")
-                prediction_not_target.write(f"Image is not target: {prediction['not_target']}%")
+                prediction = observing_service.observe_device(
+                    state.device['id'], state.bridge['id'])
+                # st.write(prediction)
+                prediction_target.write(
+                    f"Image is target: {prediction['target']}%")
+                prediction_not_target.write(
+                    f"Image is not target: {prediction['not_target']}%")
 
 
 def main():
     sidebar.load_side_bar()
     page_info()
     observe_person_detection()
+
 
 main()
